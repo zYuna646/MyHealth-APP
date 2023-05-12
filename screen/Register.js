@@ -1,29 +1,84 @@
-import { StyleSheet, Text, View, Alert } from 'react-native'
+import { StyleSheet, Text, View, Alert, Button } from 'react-native'
 import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
 import SelectDropdown from 'react-native-select-dropdown';
 import { AntDesign } from '@expo/vector-icons';
+import { getDatabase, ref, set, onValue } from "firebase/database";
+import { db } from '../api/firebase';
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 
 export default function Register({ navigation }) {
   const [nama, set_nama] = React.useState('')
-  const [tgl, set_tgl] = React.useState('')
-  const [jk, set_jk] = React.useState(0)
+  const [jk, set_jk] = React.useState('0')
   const [username, set_username] = React.useState('')
   const [password, set_password] = React.useState('')
   const [penyakit, set_penyakit] = React.useState('')
   const [operasi, set_operasi] = React.useState('')
   const [alergi, set_alergi] = React.useState('')
-  const [darah, set_darah] = React.useState('')
-  const [bb, set_bb] = React.useState(0)
-  const [tb, set_tb] = React.useState(0)
+  const [darah, set_darah] = React.useState('A')
+  const [bb, set_bb] = React.useState('')
+  const [tb, set_tb] = React.useState('')
   const golongan = ["A", "B", "O", "AB"]
+  const monthNames = [
+    "januari", "februari", "maart", "april", "mei", "juni",
+    "juli", "augustus", "september", "oktober", "november", "december"
+  ];
+  const [date, set_date] = React.useState(new Date());
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    set_date(currentDate);
+  };
+
+  const showMode = (currentMode) => {
+    DateTimePickerAndroid.open({
+      value: date,
+      onChange,
+      mode: currentMode,
+      is24Hour: true,
+    });
+  };
+
+  const showDatepicker = () => {
+    showMode('date');
+  };
+
 
   var radio_props = [
-    { label: 'Laki-Laki    ', value: 0 },
-    { label: 'Perempuan', value: 1 }
+    { label: 'Laki-Laki    ', value: '0' },
+    { label: 'Perempuan', value: '1' }
   ];
+
+  const createUser = (username, password, dt) => {
+    const starCountRef = ref(db, 'users/' + username);
+    onValue(starCountRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data == null) {
+        set(ref(db, 'users/' + username), {
+          username: username,
+          password: password,
+          data: dt
+        }).then(() => {
+          Alert.alert('Buat Akun', 'Berhasil Membuat Akun', [{
+            text: 'Ok',
+            onPress: () => {
+              navigation.navigate('Login')
+            }
+          }])
+        }).catch(e => Alert.alert('Buat Akun', e));
+      } else {
+        Alert.alert('Buat Akun', 'Nama Pengguna Sudah Digunakan')
+      }
+    });
+   
+  }
+
+  const readUser = (username) => {
+    
+  }
+
 
   return (
     <LinearGradient
@@ -59,14 +114,14 @@ export default function Register({ navigation }) {
                 }
               />
               <Text style={{ marginTop: '0.5%' }}>Tanggal Lahir</Text>
-              <TextInput
-                style={styles.input}
-                onChangeText={set_tgl}
-                value={tgl}
-                placeholder="Tanggal Lahir"
-                placeholderTextColor={'rgba(0, 0, 0, 0.5)'
-                }
-              />
+              <TouchableOpacity style={{
+                alignSelf: 'center', alignItems: 'center', borderWidth: 1.5, width: 300,
+                height: 35, borderRadius: 4
+              }}
+                onPress={showDatepicker}
+              >
+                <Text style={{ marginTop: '2%' }}>{`${date.getDate()} ${monthNames[date.getMonth()]} ${date.getFullYear()}`}</Text>
+              </TouchableOpacity>
               <Text style={{ marginTop: '0.5%' }}>Jenis Kelamin</Text>
               <RadioForm
                 radio_props={radio_props}
@@ -127,7 +182,7 @@ export default function Register({ navigation }) {
               <TextInput
                 style={styles.input}
                 onChangeText={set_bb}
-                value={Number(bb)}
+                value={bb}
                 placeholder="Berat Badan"
                 placeholderTextColor={'rgba(0, 0, 0, 0.5)'
                 }
@@ -137,7 +192,7 @@ export default function Register({ navigation }) {
               <TextInput
                 style={styles.input}
                 onChangeText={set_tb}
-                value={Number(tb)}
+                value={tb}
                 placeholder="Tinggi Badan"
                 placeholderTextColor={'rgba(0, 0, 0, 0.5)'
                 }
@@ -158,9 +213,27 @@ export default function Register({ navigation }) {
               <TouchableOpacity
                 style={styles.button}
                 onPress={() => {
-                  Alert.alert('Buat Akun', 'Berhasil Membuat Akun')
-                  navigation.navigate('Login')
-                }}
+                  if (username != '' && password != '' &&
+                    nama != '' && date != null && jk != '' &&
+                    darah != '' &&
+                    bb != '' && tb != '') {
+                    readUser(username) 
+                    createUser(username, password, {
+                      'nama': nama,
+                      'date': date,
+                      'jk': jk,
+                      'penyakit': penyakit,
+                      'operasi': operasi,
+                      'alergi': alergi,
+                      'darah': darah,
+                      'bb': bb,
+                      'tb': tb,
+                    })
+                  } else {
+                    Alert.alert('Buat Akun', 'Mohon Mengisi Data Dengan Benar')
+                  }
+                }
+                }
               >
                 <Text style={{ textAlign: 'center', marginTop: 6, fontWeight: 'bold', fontSize: 18 }}>Masuk</Text>
               </TouchableOpacity>

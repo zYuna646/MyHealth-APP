@@ -2,9 +2,11 @@ import { Alert, Button, StyleSheet, Text, View, Image, Modal } from 'react-nativ
 import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-
 export default function Home({navigation}) {
     const [menu, set_menu] = React.useState(false)
+
+
+
     return (
         <View style={styles.container}>
             <Modal

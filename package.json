@@ -17,6 +17,7 @@
     "expo": "~48.0.15",
     "expo-linear-gradient": "~12.1.2",
     "expo-status-bar": "~1.4.4",
+    "firebase": "^9.21.0",
     "native": "^0.3.3",
     "react": "18.2.0",
     "react-native": "0.71.7",
@@ -26,7 +27,9 @@
     "react-native-select-dropdown": "^3.3.3",
     "react-native-simple-radio-button": "^2.7.4",
     "react-native-vector-icons": "^9.2.0",
-    "react-navigation": "^4.4.4"
+    "react-navigation": "^4.4.4",
+    "@react-native-async-storage/async-storage": "1.17.11",
+    "@react-native-community/datetimepicker": "6.7.3"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
