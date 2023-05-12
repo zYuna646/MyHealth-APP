@@ -3,6 +3,9 @@ import { LinearGradient } from 'expo-linear-gradient'
 import React from 'react'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import { AntDesign } from '@expo/vector-icons'
+import { getDatabase, ref, set, onValue } from "firebase/database";
+import { db } from '../api/firebase';
+import { _store_data } from '../handler/handler_storage'
 
 export default function Login({ navigation }) {
   const [username, set_username] = React.useState('')
@@ -11,9 +14,23 @@ export default function Login({ navigation }) {
   React.useEffect(() => {
   }, [])
 
-  const LoginHandler = () => {
-    navigation.navigate('MainHome')
+  const LoginHandler = (username, password) => {
+    const starCountRef = ref(db, 'users/' + username);
+    onValue(starCountRef, (snapshot) => {
+      const data = snapshot.val();
+      if(data != null) {
+        if(data.password == password){
+          _store_data('user', data)
+          navigation.navigate('MainHome')
+        }else{
+          Alert.alert('Masuk', 'KataSandi Salah')
+        }
+      }else{
+        Alert.alert('Masuk', 'Pengguna Tidak Ditemukan')
+      }
+    })
   }
+
 
   return (
     <LinearGradient
@@ -62,7 +79,9 @@ export default function Login({ navigation }) {
           <View style={{ alignSelf: 'center', width: 299, height: 38, marginTop: '10%' }}>
             <TouchableOpacity
               style={styles.button}
-              onPress={LoginHandler}
+              onPress={() => {
+                LoginHandler(username, password)
+              }}
             >
               <Text style={{ textAlign: 'center', marginTop: 6, fontWeight: 'bold', fontSize: 18 }}>Masuk</Text>
             </TouchableOpacity>
