@@ -2,10 +2,20 @@ import { Alert, Button, StyleSheet, Text, View, Image, Modal } from 'react-nativ
 import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-export default function Home({navigation}) {
+import { _retrieve_data } from '../handler/handler_storage';
+export default function Home({ navigation }) {
     const [menu, set_menu] = React.useState(false)
 
+    const fetchData = async () => {
+        const data = await _retrieve_data('user')
+        if(data != null){
+            navigation.navigate('MainHome')
+        }
+    }
 
+    React.useEffect(() => {
+        fetchData()
+    }, [])
 
     return (
         <View style={styles.container}>
@@ -16,12 +26,12 @@ export default function Home({navigation}) {
                 onRequestClose={() => {
                     set_menu(!menu)
                 }}>
-                <View style={{ alignItems: 'center', alignSelf: 'center', width:'100%', backgroundColor: 'rgba(0, 0, 0, 0.5)'  }}>
+                <View style={{ alignItems: 'center', alignSelf: 'center', width: '100%', backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
                     <LinearGradient
                         colors={['#A5E5E3', '#62CFCB']}
-                        style={{margin: '25%', width:'70%', height:'70%', borderRadius: 15}  }
+                        style={{ margin: '25%', width: '70%', height: '70%', borderRadius: 15 }}
                     >
-                        <Text style={{textAlign:'center', marginTop:'10%', fontSize:25, fontWeight:'bold'}}>Petunjuk</Text>
+                        <Text style={{ textAlign: 'center', marginTop: '10%', fontSize: 25, fontWeight: 'bold' }}>Petunjuk</Text>
                         <Text > </Text>
                     </LinearGradient>
                 </View>

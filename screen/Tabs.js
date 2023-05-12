@@ -1,17 +1,37 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, BackHandler } from 'react-native'
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Home from './Home'
 import MainHome from './MainHome'
 import Profile from './Profile'
 import { Foundation, MaterialIcons, Entypo, Fontisto } from '@expo/vector-icons';
+import { useFocusEffect } from '@react-navigation/native'
 
 import { LinearGradient } from 'expo-linear-gradient'
-export default function Tabs() {
+export default function Tabs({ navigation }) {
   const Tab = createBottomTabNavigator()
+  React.useState(false);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        return true
+      };
+
+      BackHandler.addEventListener(
+        'hardwareBackPress',
+        onBackPress
+      );
+
+      return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress)
+    }, [])
+  );
+
+
   return (
 
     <Tab.Navigator
+    backBehavior='none'
       screenOptions={{
         tabBarBackground: () => (
           <LinearGradient

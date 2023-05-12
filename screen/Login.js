@@ -31,7 +31,6 @@ export default function Login({ navigation }) {
     })
   }
 
-
   return (
     <LinearGradient
       colors={['#A5E5E3', '#62CFCB']}
