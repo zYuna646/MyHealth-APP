@@ -3,7 +3,7 @@ import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export default function Home() {
+export default function Home({navigation}) {
     const [menu, set_menu] = React.useState(false)
     return (
         <View style={styles.container}>
@@ -19,7 +19,8 @@ export default function Home() {
                         colors={['#A5E5E3', '#62CFCB']}
                         style={{margin: '25%', width:'70%', height:'70%', borderRadius: 15}  }
                     >
-                        <Text>Petunjuk</Text>
+                        <Text style={{textAlign:'center', marginTop:'10%', fontSize:25, fontWeight:'bold'}}>Petunjuk</Text>
+                        <Text > </Text>
                     </LinearGradient>
                 </View>
             </Modal>
@@ -86,7 +87,7 @@ export default function Home() {
                         elevation: 5
                     }}
                         onPress={() => {
-                            Alert.alert('Login', 'Sabar Masih Sementara Bikin')
+                            navigation.navigate('Login')
                         }}
                     >
                         <LinearGradient
