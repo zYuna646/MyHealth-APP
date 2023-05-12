@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Image, Alert } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
 import React from 'react'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
+import { AntDesign } from '@expo/vector-icons'
 
 export default function Login({ navigation }) {
   const [username, set_username] = React.useState('')
@@ -24,7 +25,7 @@ export default function Login({ navigation }) {
           <TouchableOpacity onPress={() => {
             navigation.goBack()
           }}>
-            <Text>Back</Text>
+            <AntDesign name="arrowleft" size={30} color="black" />
           </TouchableOpacity>
         </View>
       </View>
@@ -66,16 +67,16 @@ export default function Login({ navigation }) {
               <Text style={{ textAlign: 'center', marginTop: 6, fontWeight: 'bold', fontSize: 18 }}>Masuk</Text>
             </TouchableOpacity>
           </View>
-          <View style={{ flexDirection: 'row' , alignSelf:'center'}} >
+          <View style={{ flexDirection: 'row', alignSelf: 'center' }} >
             <Text style={{ textAlign: 'center', marginTop: '2%', fontSize: 16, color: 'gray' }}>Belum Punya Akun? Buat Akun
             </Text>
-            <View style={{marginTop:'2%', marginLeft: '2%'}}>
-              <TouchableOpacity 
+            <View style={{ marginTop: '2%', marginLeft: '2%' }}>
+              <TouchableOpacity
                 onPress={() => {
                   navigation.navigate('Register')
                 }}
               >
-                <Text style={{fontSize: 16, fontWeight: 'bold', color:'gray', textDecorationLine: 'underline'}}>Disini</Text>
+                <Text style={{ fontSize: 16, fontWeight: 'bold', color: 'gray', textDecorationLine: 'underline' }}>Disini</Text>
               </TouchableOpacity>
             </View>
           </View>

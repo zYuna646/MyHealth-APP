@@ -1,11 +1,12 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, Alert } from 'react-native'
 import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import RadioForm, { RadioButton, RadioButtonInput, RadioButtonLabel } from 'react-native-simple-radio-button';
 import SelectDropdown from 'react-native-select-dropdown';
+import { AntDesign } from '@expo/vector-icons';
 
-export default function Register({navigation}) {
+export default function Register({ navigation }) {
   const [nama, set_nama] = React.useState('')
   const [tgl, set_tgl] = React.useState('')
   const [jk, set_jk] = React.useState(0)
@@ -30,20 +31,20 @@ export default function Register({navigation}) {
       style={{ flexDirection: 'column', flex: 1 }}
     >
       <View style={{ flex: 1 }}>
-        <View style={{ marginTop: '5%' }}>
+        <View style={{}}>
           <View style={{ alignSelf: 'flex-start', marginLeft: '5%' }}>
             <TouchableOpacity
               onPress={() => {
                 navigation.goBack()
               }}
             >
-              <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Back</Text>
+              <AntDesign name="arrowleft" size={30} color="black" />
             </TouchableOpacity>
           </View>
           <Text style={{ alignSelf: 'center', fontSize: 25, fontWeight: 'bold', position: 'absolute' }}>Buat Akun</Text>
         </View>
       </View>
-      <View style={{ flex: 20, }}>
+      <View style={{ flex: 40, }}>
         <View style={styles.container}>
           <View style={{ margin: '5%', marginTop: '1%' }}>
             <Text style={{ alignSelf: 'center', fontSize: 16, fontWeight: 'bold' }}>Informasi Umum</Text>
@@ -136,7 +137,7 @@ export default function Register({navigation}) {
               <TextInput
                 style={styles.input}
                 onChangeText={set_tb}
-                value={tb}
+                value={Number(tb)}
                 placeholder="Tinggi Badan"
                 placeholderTextColor={'rgba(0, 0, 0, 0.5)'
                 }
@@ -144,9 +145,9 @@ export default function Register({navigation}) {
 
               />
               <Text style={{ marginTop: '0.5%' }}>Golongan Darah</Text>
-              <SelectDropdown 
+              <SelectDropdown
                 data={golongan}
-                buttonStyle={{width: 300, height:35, borderRadius: 4, borderWidth: 1.5, backgroundColor:'white'}}
+                buttonStyle={{ width: 300, height: 35, borderRadius: 4, borderWidth: 1.5, backgroundColor: 'white' }}
                 defaultValueByIndex={0}
                 onSelect={(value, index) => {
                   set_darah(value)
@@ -157,7 +158,8 @@ export default function Register({navigation}) {
               <TouchableOpacity
                 style={styles.button}
                 onPress={() => {
-                  console.log('disini');
+                  Alert.alert('Buat Akun', 'Berhasil Membuat Akun')
+                  navigation.navigate('Login')
                 }}
               >
                 <Text style={{ textAlign: 'center', marginTop: 6, fontWeight: 'bold', fontSize: 18 }}>Masuk</Text>

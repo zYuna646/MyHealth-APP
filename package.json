@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo/vector-icons": "^13.0.0",
     "@react-native-masked-view/masked-view": "0.2.8",
     "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/native": "^6.1.6",
@@ -24,6 +25,7 @@
     "react-native-screens": "~3.20.0",
     "react-native-select-dropdown": "^3.3.3",
     "react-native-simple-radio-button": "^2.7.4",
+    "react-native-vector-icons": "^9.2.0",
     "react-navigation": "^4.4.4"
   },
   "devDependencies": {
