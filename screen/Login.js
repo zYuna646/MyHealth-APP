@@ -11,7 +11,7 @@ export default function Login({ navigation }) {
   }, [])
 
   const LoginHandler = () => {
-    Alert.alert('Masuk', 'Inproses')
+    navigation.navigate('MainHome')
   }
 
   return (
