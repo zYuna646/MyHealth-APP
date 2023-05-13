@@ -8,6 +8,8 @@ import { Foundation, MaterialIcons, Entypo, Fontisto } from '@expo/vector-icons'
 import { useFocusEffect } from '@react-navigation/native'
 
 import { LinearGradient } from 'expo-linear-gradient'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import Exit from './Exit'
 export default function Tabs({ navigation }) {
   const Tab = createBottomTabNavigator()
   React.useState(false);
@@ -36,7 +38,7 @@ export default function Tabs({ navigation }) {
         tabBarBackground: () => (
           <LinearGradient
             colors={['#A5E5E3', '#62CFCB']}
-            style={{ flex: 1 }}
+            style={{ flex: 1, borderTopRightRadius: 10, borderTopLeftRadius: 10 }}
             start={{ x: 0, y: 0.5 }}
             end={{ x: 1, y: 0.5 }}
           />
@@ -49,7 +51,7 @@ export default function Tabs({ navigation }) {
 
     >
       <Tab.Screen
-        name='Home'
+        name='HomeTabs'
         component={MainHome}
         options={{
           tabBarIcon: (props) => (
@@ -77,7 +79,7 @@ export default function Tabs({ navigation }) {
       />
       <Tab.Screen
         name='Keluar'
-        component={MainHome}
+        component={Exit}
         options={{
           tabBarIcon: (props) => (
             <Entypo name="log-out" size={30} color={props.color} />

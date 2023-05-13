@@ -47,8 +47,8 @@ export default function Register({ navigation }) {
 
 
   var radio_props = [
-    { label: 'Laki-Laki    ', value: '0' },
-    { label: 'Perempuan', value: '1' }
+    { label: 'Laki-Laki    ', value: 'Laki-Laki' },
+    { label: 'Perempuan', value: 'Perempuan' }
   ];
 
   const createUser = (username, password, dt) => {
@@ -75,9 +75,6 @@ export default function Register({ navigation }) {
    
   }
 
-  const readUser = (username) => {
-    
-  }
 
 
   return (
@@ -217,10 +214,9 @@ export default function Register({ navigation }) {
                     nama != '' && date != null && jk != '' &&
                     darah != '' &&
                     bb != '' && tb != '') {
-                    readUser(username) 
                     createUser(username, password, {
                       'nama': nama,
-                      'date': date,
+                      'tgl': String(`${date.getDate()} ${monthNames[date.getMonth()]} ${date.getFullYear()}`),
                       'jk': jk,
                       'penyakit': penyakit,
                       'operasi': operasi,
