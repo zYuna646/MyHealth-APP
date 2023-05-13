@@ -4,10 +4,10 @@
     "slug": "MyHealth",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/img/Home/home.png",
+    "icon": "./assets/img/Home/heart.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/img/Home/heart.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -28,7 +28,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/img/Home/home.png",
+        "foregroundImage": "./assets/img/Home/heart.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.zyuna646.MyHealth"

@@ -15,28 +15,27 @@ export default function App() {
   const Stack = createStackNavigator()
   return (
     <NavigationContainer>
-    <Stack.Navigator
-      initialRouteName='Home'
-      screenOptions={{headerShown: false}}
-    >
-      <Stack.Screen 
-        name='Home'
-        component={Home}
-      />
-      <Stack.Screen 
-        name='Login'
-        component={Login}
-      />
-      <Stack.Screen 
-        name='Register'
-        component={Register}
-      />
-      <Stack.Screen 
-        name='MainHome'
-        component={Tabs}
-      />
-
-    </Stack.Navigator>
+      <Stack.Navigator
+        initialRouteName='Home'
+        screenOptions={{ headerShown: false }}
+      >
+        <Stack.Screen
+          name='Home'
+          component={Home}
+        />
+        <Stack.Screen
+          name='Login'
+          component={Login}
+        />
+        <Stack.Screen
+          name='Register'
+          component={Register}
+        />
+        <Stack.Screen
+          name='MainHome'
+          component={Tabs}
+        />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 }
