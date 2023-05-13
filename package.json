@@ -13,6 +13,7 @@
     "@react-native-async-storage/async-storage": "1.17.11",
     "@react-native-community/datetimepicker": "6.7.3",
     "@react-native-masked-view/masked-view": "0.2.8",
+    "@react-native-voice/voice": "^3.2.4",
     "@react-navigation/bottom-tabs": "^6.5.7",
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/stack": "^6.3.16",
@@ -30,7 +31,8 @@
     "react-native-select-dropdown": "^3.3.3",
     "react-native-simple-radio-button": "^2.7.4",
     "react-native-vector-icons": "^9.2.0",
-    "react-navigation": "^4.4.4"
+    "react-navigation": "^4.4.4",
+    "expo-speech": "~11.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
