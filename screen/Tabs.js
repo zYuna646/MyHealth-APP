@@ -10,6 +10,7 @@ import { useFocusEffect } from '@react-navigation/native'
 import { LinearGradient } from 'expo-linear-gradient'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import Exit from './Exit'
+import Comunication from './Comunication'
 export default function Tabs({ navigation }) {
   const Tab = createBottomTabNavigator()
   React.useState(false);
@@ -60,8 +61,8 @@ export default function Tabs({ navigation }) {
         }}
       />
       <Tab.Screen
-        name='Form'
-        component={MainHome}
+        name='Voice'
+        component={Comunication}
         options={{
           tabBarIcon: (props) => (
             <Fontisto name="mic" size={30} color={props.color} />

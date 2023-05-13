@@ -47,8 +47,8 @@ export default function Register({ navigation }) {
 
 
   var radio_props = [
-    { label: 'Laki-Laki    ', value: 'Laki-Laki' },
-    { label: 'Perempuan', value: 'Perempuan' }
+    { label: 'Laki-Laki    ', value: '0' },
+    { label: 'Perempuan', value: '1' }
   ];
 
   const createUser = (username, password, dt) => {

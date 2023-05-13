@@ -69,7 +69,7 @@ export default function Profile() {
               (<View>
                 <Text style={styles.txt}>{user.data.nama}</Text>
                 <Text style={styles.txt}>{user.data.tgl}</Text>
-                <Text style={styles.txt}>{user.data.jk}</Text>
+                <Text style={styles.txt}>{user.data.jk == '0'? ('Laki-Laki') : ('Perempuan')}</Text>
                 <Text style={styles.txt}>{user.data.penyakit}</Text>
                 <Text style={styles.txt}>{user.data.operasi}</Text>
                 <Text style={styles.txt}>{user.data.alergi}</Text>
