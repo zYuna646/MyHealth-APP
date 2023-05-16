@@ -779,6 +779,14 @@ function Hasil() {
   )
 }
 
+function Voice(){
+  return(
+    <View>
+      
+    </View>
+  )
+}
+
 function HasilRegio() {
   const [region, set_regio] = React.useState(0)
   const [dotDepan, setDotDepan] = React.useState([]);
