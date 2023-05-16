@@ -1,14 +1,30 @@
-import { StyleSheet, Text, View, Image, KeyboardAvoidingView, ScrollView, TouchableHighlight } from 'react-native'
+import { StyleSheet, Text, View, Image, KeyboardAvoidingView, ScrollView, TouchableHighlight, ActivityIndicator, Modal, TouchableWithoutFeedback } from 'react-native'
 import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import { AntDesign, Octicons } from '@expo/vector-icons';
-
+import { _store_data, _retrieve_data } from '../handler/handler_storage'
+import { useIsFocused } from '@react-navigation/native';
 
 function Regio() {
   const [region, set_regio] = React.useState(0)
   const [dotDepan, setDotDepan] = React.useState([]);
   const [dotBelakang, setDotBelakang] = React.useState([]);
+
+  const isFocused = useIsFocused();
+
+  React.useEffect(() => {
+    if (!isFocused) {
+      console.log(dotDepan);
+    }
+
+    return () => {
+      if (dotDepan.length > 0 || dotBelakang.length > 0) {
+        _store_data('Regio', [dotDepan, dotBelakang])
+      }
+    }
+  }, [isFocused, dotDepan, dotBelakang]);
+
 
   const addDotDepan = (event) => {
     const { locationX, locationY } = event.nativeEvent;
@@ -58,7 +74,7 @@ function Regio() {
         ))
       )}
 
-      <View style={{ flexDirection: 'row', alignSelf: 'center',marginTop:'2%' }}>
+      <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: '2%' }}>
         <TouchableOpacity style={{ marginRight: 10 }}
           onPress={() => { set_regio(0) }}
         >
@@ -75,16 +91,16 @@ function Regio() {
         </TouchableOpacity>
 
       </View>
-      <TouchableOpacity style={{alignSelf:'center', backgroundColor:'white', padding:3, borderRadius:10, marginTop:'5%'}}
+      <TouchableOpacity style={{ alignSelf: 'center', backgroundColor: 'white', padding: 3, borderRadius: 10, marginTop: '5%' }}
         onPress={() => {
-          if(region == 0){
+          if (region == 0) {
             setDotDepan([])
-          }else{
+          } else {
             setDotBelakang([])
           }
         }}
       >
-        <Text style={{fontWeight:'bold', fontSize:15}}>Hapus Tanda</Text>
+        <Text style={{ fontWeight: 'bold', fontSize: 15 }}>Hapus Tanda</Text>
       </TouchableOpacity>
     </View>
   )
@@ -126,6 +142,17 @@ function Gejala() {
     '', '', '', '', '', '', ''
   ])
 
+  const isFocused = useIsFocused();
+
+  React.useEffect(() => {
+    if (!isFocused) {
+    }
+    return () => {
+      _store_data('Gejala', hasil)
+    }
+  }, [isFocused, hasil]);
+
+
   const [color, setColor] = React.useState([
     'white', 'white', 'white', 'white', 'white', 'white', 'white',
     'white', 'white', 'white', 'white', 'white', 'white',
@@ -148,7 +175,7 @@ function Gejala() {
   }
 
   return (
-    <View style={{ flexDirection: 'row', flexWrap: 'wrap', alignSelf: 'center', marginLeft: '5%', marginTop: '10%' }}>
+    <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', alignSelf: 'center', marginLeft: '5%', marginTop: '10%' }}>
       {image.map((result, index) => (
         <LinearGradient
           colors={[color[index], '#D9D9D9']}
@@ -212,8 +239,14 @@ function Gejala() {
           />
         </View>
       </LinearGradient>
+      <View
+        style={{
+          width: '90%', borderRadius: 10, height: 80, marginTop: '5%'
+        }}
+      >
+      </View>
 
-    </View>
+    </ScrollView>
   );
 }
 
@@ -226,6 +259,18 @@ function Konsumsi() {
     require('../assets/img/Sakit/sore.png'),
     require('../assets/img/Sakit/malam.png'),
   ]
+
+  const isFocused = useIsFocused();
+
+  React.useEffect(() => {
+    if (!isFocused) {
+    }
+    return () => {
+      _store_data('Konsumsi', konsumsi)
+    }
+  }, [isFocused, konsumsi]);
+
+
   return (
     <ScrollView contentContainerStyle={{ flexDirection: 'column', flexWrap: 'wrap', alignSelf: 'center' }}>
       {image.map((result, index) => (
@@ -270,6 +315,17 @@ function Sakit() {
 
   const [hasil, set_hasil] = React.useState('')
   const [lainnya, set_lainnya] = React.useState('')
+
+  const isFocused = useIsFocused();
+
+  React.useEffect(() => {
+    if (!isFocused) {
+    }
+    return () => {
+      _store_data('Sakit', hasil)
+    }
+  }, [isFocused, hasil]);
+
 
   const sumbit = (i) => {
     set_lainnya('')
@@ -347,6 +403,17 @@ function Menstruasi() {
   const [Btn, set_btn] = React.useState([
     'Ya', 'Tidak', 'Sakit', 'Tidak'
   ])
+
+  const isFocused = useIsFocused();
+
+  React.useEffect(() => {
+    if (!isFocused) {
+    }
+    return () => {
+      _store_data('Menstruasi', hasil)
+    }
+  }, [isFocused, hasil]);
+
 
   const [color, set_color] = React.useState(['white', 'white', 'white', 'white'])
 
@@ -452,6 +519,17 @@ function Riwayat() {
     set_color(newColor)
   }
 
+  const isFocused = useIsFocused();
+
+  React.useEffect(() => {
+    if (!isFocused) {
+    }
+    return () => {
+      _store_data('Riwayat', hasil)
+    }
+  }, [isFocused, hasil]);
+
+
   return (
     <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', alignSelf: 'center', marginTop: '50%' }}>
       {Btn.map((result, index) => (
@@ -484,26 +562,324 @@ function Riwayat() {
 
 
 function Hasil() {
-  return (
-    <View>
 
+  const [hasil, set_hasil] = React.useState(null)
+  const [user, set_user] = React.useState(null)
+  React.useState(() => {
+    const fetchData = async () => {
+      const Regio = await _retrieve_data('Regio')
+      let Gejala = await _retrieve_data('Gejala')
+      let Konsumsi = await _retrieve_data('Konsumsi')
+      const Sakit = await _retrieve_data('Sakit')
+      let Menstruasi = await _retrieve_data('Menstruasi')
+      const Riwayat = await _retrieve_data('Riwayat')
+      const data = await _retrieve_data('user')
+
+      Gejala = Gejala.filter(Boolean)
+      Gejala = Gejala.join(' , ')
+      if (Menstruasi != null) {
+        Menstruasi = Menstruasi.filter(Boolean)
+        Menstruasi = Menstruasi.join(' , ')
+      }
+
+      set_hasil({
+        'Regio': Regio,
+        'Gejala': Gejala,
+        'Konsumsi': Konsumsi,
+        'Sakit': Sakit,
+        'Menstruasi': Menstruasi,
+        'Riwayat': Riwayat
+      })
+
+      set_user(data)
+    }
+
+    fetchData()
+  }, [])
+
+  const [showModal, setShowModal] = React.useState(false);
+
+  const toggleModal = () => {
+    setShowModal(!showModal);
+  };
+
+
+
+  return (
+    <ScrollView style={{ flex: 1 }}>
+      <View style={{ margin: '5%', marginLeft: '8%', flexDirection: 'row' }}>
+        <View>
+          <View>
+            <Text style={styles.txt}>Sakit Yang Dirasakan</Text>
+            <Text style={styles.txt}>Gejala</Text>
+          </View>
+          <View style={{}}>
+            <Text style={{
+              fontWeight: 'bold',
+              fontSize: 15,
+              marginTop: 80
+            }}>Yang Dikonsumsi</Text>
+            <Text style={{
+              fontWeight: 'bold',
+              fontSize: 15,
+              marginTop: 10
+            }}>Pagi</Text>
+            <Text style={{
+              fontWeight: 'bold',
+              fontSize: 15,
+              marginTop: 25
+            }}>Siang</Text>
+            <Text style={{
+              fontWeight: 'bold',
+              fontSize: 15,
+              marginTop: 25
+            }}>Sore</Text>
+            <Text style={{
+              fontWeight: 'bold',
+              fontSize: 15,
+              marginTop: 25
+            }}>Malam</Text>
+
+          </View>
+          <View style={{}}>
+            <Text style={{
+              fontWeight: 'bold',
+              fontSize: 15,
+              marginTop: 25
+            }}>Berapa Lama Sakit</Text>
+            <Text style={{
+              fontWeight: 'bold',
+              fontSize: 15,
+              marginTop: 25
+            }}>Riwayat Pengobatan</Text>
+            <Text style={{
+              fontWeight: 'bold',
+              fontSize: 15,
+              marginTop: 25
+            }}>{hasil != null ? (hasil.Menstruasi == null ? ('') : ('Menstruasi')) : ('')}</Text>
+          </View>
+
+
+        </View>
+        <View>
+          <View>
+            <Text style={styles.txt}>  </Text>
+            <Text style={styles.txt}> : </Text>
+          </View>
+          <View style={{}}>
+            <Text style={{
+              fontWeight: 'bold',
+              fontSize: 15,
+              marginTop: 80
+            }}>  </Text>
+            <Text style={{
+              fontWeight: 'bold',
+              fontSize: 15,
+              marginTop: 10
+            }}> : </Text>
+            <Text style={{
+              fontWeight: 'bold',
+              fontSize: 15,
+              marginTop: 25
+            }}> : </Text>
+            <Text style={{
+              fontWeight: 'bold',
+              fontSize: 15,
+              marginTop: 25
+            }}> : </Text>
+            <Text style={{
+              fontWeight: 'bold',
+              fontSize: 15,
+              marginTop: 25
+            }}> : </Text>
+
+          </View>
+          <View style={{}}>
+            <Text style={{
+              fontWeight: 'bold',
+              fontSize: 15,
+              marginTop: 25
+            }}> : </Text>
+            <Text style={{
+              fontWeight: 'bold',
+              fontSize: 15,
+              marginTop: 25
+            }}> : </Text>
+            <Text style={{
+              fontWeight: 'bold',
+              fontSize: 15,
+              marginTop: 25
+            }}>{hasil != null ? (hasil.Menstruasi == null ? ('') : (' : ')) : ('')}</Text>
+          </View>
+        </View>
+        {user != null && hasil != null ?
+          (<View>
+            <View style={{ position: 'absolute' }}>
+              <Text style={styles.txt}></Text>
+              <TextInput
+                onPress={toggleModal}
+                editable={false}
+                multiline={true}
+                value={hasil.Gejala}
+                style={{ width: 150, fontWeight: 'bold', fontSize: 15, padding: 10, color: 'black' }}
+              />
+            </View>
+            <View style={{}}>
+              <Text style={{
+                fontWeight: 'bold',
+                fontSize: 15,
+                marginTop: 132
+              }}>  </Text>
+              <Text style={{
+                fontWeight: 'bold',
+                fontSize: 15,
+                marginTop: 10
+              }}>{hasil.Konsumsi[0]}</Text>
+              <Text style={{
+                fontWeight: 'bold',
+                fontSize: 15,
+                marginTop: 25
+              }}>{hasil.Konsumsi[1]}</Text>
+              <Text style={{
+                fontWeight: 'bold',
+                fontSize: 15,
+                marginTop: 25
+              }}>{hasil.Konsumsi[2]}</Text>
+              <Text style={{
+                fontWeight: 'bold',
+                fontSize: 15,
+                marginTop: 25
+              }}>{hasil.Konsumsi[3]}</Text>
+            </View>
+
+            <View style={{}}>
+              <Text style={{
+                fontWeight: 'bold',
+                fontSize: 15,
+                marginTop: 25
+              }}>{hasil.Sakit}</Text>
+              <Text style={{
+                fontWeight: 'bold',
+                fontSize: 15,
+                marginTop: 25
+              }}>{hasil.Riwayat}</Text>
+              <Text style={{
+                fontWeight: 'bold',
+                fontSize: 15,
+                marginTop: 25
+              }}>{hasil.Menstruasir}</Text>
+            </View>
+
+
+          </View>) :
+          (<ActivityIndicator />)}
+      </View>
+    </ScrollView>
+
+  )
+}
+
+function HasilRegio() {
+  const [region, set_regio] = React.useState(0)
+  const [dotDepan, setDotDepan] = React.useState([]);
+  const [dotBelakang, setDotBelakang] = React.useState([]);
+
+  const isFocused = useIsFocused();
+
+  React.useEffect(() => {
+    const fetchData = async() => {
+      const Regio = await _retrieve_data('Regio')
+      setDotDepan(Regio[0])
+      setDotBelakang(Regio[1])
+    }
+    fetchData()
+  }, []);
+
+
+  const addDotDepan = (event) => {
+  };
+  const addDotBelakang = (event) => {
+  };
+  return (
+    <View style={{ alignSelf: 'center' }}>
+
+        <Image style={{ width: 225, height: 500, alignSelf: 'center' }} source={region === 0 ? require('../assets/img/Regio/depan.png') : require('../assets/img/Regio/belakang.png')} />
+      {region === 0 ? (
+        dotDepan.map((dot, index) => (
+          <View
+            key={index}
+            style={{
+              position: 'absolute',
+              backgroundColor: 'rgba(255, 0, 0, 0.4)',
+              width: 25,
+              height: 25,
+              borderRadius: 100,
+              top: dot.y,
+              left: dot.x,
+            }}
+          />
+        ))
+      ) : (
+        dotBelakang.map((dot, index) => (
+          <View
+            key={index}
+            style={{
+              position: 'absolute',
+              backgroundColor: 'rgba(255, 0, 0, 0.4)',
+              width: 25,
+              height: 25,
+              borderRadius: 100,
+              top: dot.y,
+              left: dot.x,
+            }}
+          />
+        ))
+      )}
+
+      <View style={{ flexDirection: 'row', alignSelf: 'center', marginTop: '2%' }}>
+        <TouchableOpacity style={{ marginRight: 10 }}
+          onPress={() => { set_regio(0) }}
+        >
+          <AntDesign name="left" size={30} color="black" />
+        </TouchableOpacity>
+
+        <Octicons style={{ marginRight: 2.5 }} name={region == 0 ? ('dot-fill') : ('dot')} size={30} color="black" />
+        <Octicons style={{ marginLeft: 2.5 }} name={region == 1 ? ('dot-fill') : ('dot')} size={30} color="black" />
+
+        <TouchableOpacity style={{ marginLeft: 10 }}
+          onPress={() => { set_regio(1) }}
+        >
+          <AntDesign name="right" size={30} color="black" />
+        </TouchableOpacity>
+
+      </View>
     </View>
   )
 }
 
 
+
 export default function MainHome() {
 
-  const form = [<Regio />, <Gejala />, <Konsumsi />, <Sakit />, <Riwayat />, <Menstruasi />, <Hasil />]
+  const form = [<Regio />, <Gejala />, <Konsumsi />, <Sakit />, <Riwayat />, <Menstruasi />, <Hasil />, <HasilRegio />]
   const [index, set_index] = React.useState(0)
+  const [user, set_user] = React.useState(null)
 
   const formText = ['Sakit Yang Dirasakan', 'Gejala Yang Dirasakan', 'Apa Yang Dikonsumsi',
-    'Berapa Lama Sakit', 'Riwayat Pengobatan', 'Menstruasi', 'Hasil ']
+    'Berapa Lama Sakit', 'Riwayat Pengobatan', 'Menstruasi', 'Hasil ', 'Hasil Regio']
+
+  React.useEffect(() => {
+    const fetchData = async () => {
+      const data = await _retrieve_data('user')
+      set_user(data)
+    }
+    fetchData()
+  }, [])
 
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
       <View style={{ flex: 1 }}>
-        <Text style={{ alignSelf: 'center', marginTop: '10%', fontWeight: 'bold', fontSize: 22 }}>
+        <Text style={{ alignSelf: 'center', marginTop: '2.5%', fontWeight: 'bold', fontSize: 22 }}>
           {formText[index]}
         </Text>
       </View>
@@ -511,7 +887,7 @@ export default function MainHome() {
       <LinearGradient
         colors={['#A5E5E3', '#62CFCB']}
         style={{
-          flex: 8, margin: '5%', borderRadius: 10, shadowColor: 'black',
+          flex: 8, margin: '5%', marginTop: '-5%', borderRadius: 10, shadowColor: 'black',
           shadowOffset: {
             width: 0,
             height: 4
@@ -527,10 +903,21 @@ export default function MainHome() {
       </LinearGradient>
 
       <View style={{ flex: 1 }}>
-        <View style={{ alignSelf: 'center', width: 131, height: 46 }}>
+        <View style={{ alignSelf: 'center', width: 131, height: 50 }}>
           <TouchableOpacity style={{ alignSelf: 'center' }}
             onPress={() => {
-              set_index(index + 1)
+              if (user != null) {
+                if (index == form.length - 1) {
+                  set_index(0)
+                } else {
+                  if (user.data.jk == 0 && index == 4) {
+                    set_index(index + 2)
+                  } else {
+                    set_index(index + 1)
+                  }
+                }
+              }
+
             }}
           >
             <LinearGradient
@@ -546,7 +933,7 @@ export default function MainHome() {
                 elevation: 5,
               }}
             >
-              <Text style={{ alignSelf: 'center', padding: 10, color: 'white', fontWeight: 'bold', fontSize: 18 }}>Lanjut</Text>
+              <Text style={{ alignSelf: 'center', padding: 10, color: 'white', fontWeight: 'bold', fontSize: 18 }}>{index == form.length - 1? ('Kembali') : ('Lanjut')}</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -559,8 +946,9 @@ export default function MainHome() {
 }
 
 const styles = StyleSheet.create({
-
-
-
-
+  txt: {
+    fontWeight: 'bold',
+    fontSize: 15,
+    marginTop: 5
+  }
 })

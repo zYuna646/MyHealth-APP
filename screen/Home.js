@@ -1,14 +1,16 @@
 import { Alert, Button, StyleSheet, Text, View, Image, Modal } from 'react-native'
 import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import { _retrieve_data } from '../handler/handler_storage';
+import { Foundation, MaterialIcons, Entypo, Fontisto } from '@expo/vector-icons';
+
 export default function Home({ navigation }) {
     const [menu, set_menu] = React.useState(false)
 
     const fetchData = async () => {
         const data = await _retrieve_data('user')
-        if(data != null){
+        if (data != null) {
             navigation.navigate('MainHome')
         }
     }
@@ -31,8 +33,10 @@ export default function Home({ navigation }) {
                         colors={['#A5E5E3', '#62CFCB']}
                         style={{ margin: '25%', width: '70%', height: '70%', borderRadius: 15 }}
                     >
-                        <Text style={{ textAlign: 'center', marginTop: '10%', fontSize: 25, fontWeight: 'bold' }}>Petunjuk</Text>
-                        <Text > </Text>
+                        <Image 
+                            source={require('../assets/img/Petunjuk.png')}
+                            style={{width:270, height:440, alignSelf:'center', margin:'5%'}}
+                        />
                     </LinearGradient>
                 </View>
             </Modal>
