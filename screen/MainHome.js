@@ -3,8 +3,13 @@ import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import { AntDesign, Octicons } from '@expo/vector-icons';
-import { _store_data, _retrieve_data } from '../handler/handler_storage'
+import { Foundation, MaterialIcons, Entypo, Fontisto } from '@expo/vector-icons';
+import Autocomplete from 'react-native-autocomplete-input';
+import { _store_data, _retrieve_data, _remove_data } from '../handler/handler_storage'
 import { useIsFocused } from '@react-navigation/native';
+import Voice from '@react-native-voice/voice';
+import * as Speech from 'expo-speech';
+
 
 function Regio() {
   const [region, set_regio] = React.useState(0)
@@ -405,6 +410,10 @@ function Menstruasi() {
   ])
 
   const isFocused = useIsFocused();
+  const [color, set_color] = React.useState(['white', 'white', 'white', 'white'])
+
+  const [hasil, set_hasil] = React.useState(['', '', ''])
+  const [lainnya, set_lainnya] = React.useState('')
 
   React.useEffect(() => {
     if (!isFocused) {
@@ -415,23 +424,37 @@ function Menstruasi() {
   }, [isFocused, hasil]);
 
 
-  const [color, set_color] = React.useState(['white', 'white', 'white', 'white'])
-
-  const [hasil, set_hasil] = React.useState(['', '', ''])
-  const [lainnya, set_lainnya] = React.useState('')
 
   const sumbit = (i) => {
     set_lainnya('')
-    const newColor = ['white', 'white', 'white', 'white', 'white', 'white']
+    const newColor = [...color]
     if (color[i] != 'white') {
       const newHasil = [...hasil]
-      newHasil[(i < 2 ? (0) : (1))] = ''
+      newHasil[i < 2 ? (0) : (1)] = ''
       set_hasil(newHasil)
+      newColor[i] = 'white'
     } else {
-      newColor[i] = 'green'
+      if(i < 2){
+        if(i == 0){
+          newColor[0] ='green'
+          newColor[1] = 'white'
+        }else{
+          newColor[1] ='green'
+          newColor[0] = 'white'
+        }
+      }else{
+        if(i == 2){
+          newColor[2] ='green'
+          newColor[3] = 'white'
+        }else{
+          newColor[3] ='green'
+          newColor[2] = 'white'
+        }
+      }
     }
     set_color(newColor)
   }
+
 
 
   return (
@@ -575,13 +598,21 @@ function Hasil() {
       const Riwayat = await _retrieve_data('Riwayat')
       const data = await _retrieve_data('user')
 
-      Gejala = Gejala.filter(Boolean)
-      Gejala = Gejala.join(' , ')
+      if (Konsumsi == null) {
+        Konsumsi = ['', '', '', '']
+      }
+
+
+      if (Gejala != null) {
+        Gejala = Gejala.filter(Boolean)
+        Gejala = Gejala.join(' , ')
+      }
+
       if (Menstruasi != null) {
         Menstruasi = Menstruasi.filter(Boolean)
         Menstruasi = Menstruasi.join(' , ')
       }
-
+     
       set_hasil({
         'Regio': Regio,
         'Gejala': Gejala,
@@ -767,7 +798,7 @@ function Hasil() {
                 fontWeight: 'bold',
                 fontSize: 15,
                 marginTop: 25
-              }}>{hasil.Menstruasir}</Text>
+              }}>{hasil.Menstruasi}</Text>
             </View>
 
 
@@ -779,13 +810,6 @@ function Hasil() {
   )
 }
 
-function Voice(){
-  return(
-    <View>
-      
-    </View>
-  )
-}
 
 function HasilRegio() {
   const [region, set_regio] = React.useState(0)
@@ -795,8 +819,11 @@ function HasilRegio() {
   const isFocused = useIsFocused();
 
   React.useEffect(() => {
-    const fetchData = async() => {
-      const Regio = await _retrieve_data('Regio')
+    const fetchData = async () => {
+      let Regio = await _retrieve_data('Regio')
+      if (Regio == null) {
+        Regio = [[], []]
+      }
       setDotDepan(Regio[0])
       setDotBelakang(Regio[1])
     }
@@ -810,8 +837,7 @@ function HasilRegio() {
   };
   return (
     <View style={{ alignSelf: 'center' }}>
-
-        <Image style={{ width: 225, height: 500, alignSelf: 'center' }} source={region === 0 ? require('../assets/img/Regio/depan.png') : require('../assets/img/Regio/belakang.png')} />
+      <Image style={{ width: 225, height: 500, alignSelf: 'center' }} source={region === 0 ? require('../assets/img/Regio/depan.png') : require('../assets/img/Regio/belakang.png')} />
       {region === 0 ? (
         dotDepan.map((dot, index) => (
           <View
@@ -866,15 +892,61 @@ function HasilRegio() {
 }
 
 
-
 export default function MainHome() {
 
-  const form = [<Regio />, <Gejala />, <Konsumsi />, <Sakit />, <Riwayat />, <Menstruasi />, <Hasil />, <HasilRegio />]
+  const form = [<></>, <Regio />, <Gejala />, <Konsumsi />, <Sakit />, <Riwayat />, <Menstruasi />, <Hasil />, <HasilRegio />]
   const [index, set_index] = React.useState(0)
   const [user, set_user] = React.useState(null)
+  const formText = ['', 'Sakit Yang Dirasakan', 'Gejala Yang Dirasakan', 'Apa Yang Dikonsumsi',
+    'Berapa Lama Sakit', 'Riwayat Pengobatan', 'Bagaimana Menstruasi', 'Hasil ', 'Hasil Regio']
 
-  const formText = ['Sakit Yang Dirasakan', 'Gejala Yang Dirasakan', 'Apa Yang Dikonsumsi',
-    'Berapa Lama Sakit', 'Riwayat Pengobatan', 'Menstruasi', 'Hasil ', 'Hasil Regio']
+  const Pertanyaan = [
+    ['sakit di bagian tubuh mana', 'sakit di bagian mana', 'sakit apa yang dirasakan', 'bagian tubuh yang terasa sakit'],
+    ['gejala apa yang dirasakan', 'apa yang dirasakan', 'perasaanya bagaimana'],
+    ['makanan apa yang dikonsumsi kemarin', 'apa yang dikonsumsi hari ini', 'makanan apa hari ini', 'makan apa'],
+    ['berapa lama sakit dirasakan', 'sakit berapa lama', 'merasakan sakit sejak kapan', 'kapan merasa sakit', 'berapa hari sakit'],
+    ['sebelumnya sempat berobat', 'sudah minum obat'],
+    ['apakah sedang menstruasi', 'apakah saat ini menstruasi', 'apakah saat ini sedang menstruasi', 'apakah sedang datang bulan', 'apakah saat ini datang bulan', 'apakah saat ini sedang datang bulan', 'sudah berapa hari datang bulan', 'apakah sedang haid', 'apakah saat ini haid', 'sudah berapa hari haid']
+  ]
+
+  let [started, setStarted] = React.useState(false);
+  let [results, setResults] = React.useState([]);
+  const [hasil, setHasil] = React.useState('')
+  const [sound, setSound] = React.useState('')
+
+  const suggestions = [
+    'sakit di bagian tubuh mana', 'sakit di bagian mana', 'sakit apa yang dirasakan', 'bagian tubuh yang terasa sakit',
+    'gejala apa yang dirasakan', 'apa yang dirasakan', 'perasaanya bagaimana',
+    'makanan apa yang dikonsumsi kemarin', 'apa yang dikonsumsi hari ini', 'makanan apa hari ini', 'makan apa',
+    'berapa lama sakit dirasakan', 'sakit berapa lama', 'merasakan sakit sejak kapan', 'kapan merasa sakit', 'berapa hari sakit',
+    'sebelumnya sempat berobat', 'sudah minum obat',
+    'apakah sedang menstruasi', 'apakah saat ini menstruasi', 'apakah saat ini sedang menstruasi', 'apakah sedang datang bulan', 'apakah saat ini datang bulan', 'apakah saat ini sedang datang bulan', 'sudah berapa hari datang bulan', 'apakah sedang haid', 'apakah saat ini haid', 'sudah berapa hari haid'
+  ]
+
+
+  const startSpeechToText = async () => {
+    await Voice.start("id-ID");
+    setStarted(true);
+  };
+
+  const stopSpeechToText = async () => {
+    await Voice.stop();
+    setStarted(false);
+  };
+
+  const onSpeechResults = (result) => {
+    result.value.map((result, index) => {
+      if (index == 0) {
+        setHasil(result)
+        ChangeView(result)
+      }
+    })
+    setResults(result.value);
+  };
+
+  const onSpeechError = (error) => {
+    console.log(error);
+  };
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -882,12 +954,31 @@ export default function MainHome() {
       set_user(data)
     }
     fetchData()
+
+    Voice.onSpeechError = onSpeechError;
+    Voice.onSpeechResults = onSpeechResults;
+
+    return () => {
+      Voice.destroy().then(Voice.removeAllListeners);
+    }
   }, [])
+
+  const ChangeView = (hsl) => {
+    for (let i = 0; i < Pertanyaan.length; i++) {
+      const isHave = Pertanyaan[i].includes(hsl.toLowerCase());
+      if (isHave === true) {
+        set_index(i + 1);
+        setHasil('')
+        break;
+      }
+    }
+  };
 
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
-      <View style={{ flex: 1 }}>
-        <Text style={{ alignSelf: 'center', marginTop: '2.5%', fontWeight: 'bold', fontSize: 22 }}>
+
+      <View style={{ flex: 1, marginTop: '5%' }}>
+        <Text style={{ alignSelf: 'center', fontWeight: 'bold', fontSize: 22 }}>
           {formText[index]}
         </Text>
       </View>
@@ -895,7 +986,7 @@ export default function MainHome() {
       <LinearGradient
         colors={['#A5E5E3', '#62CFCB']}
         style={{
-          flex: 8, margin: '5%', marginTop: '-5%', borderRadius: 10, shadowColor: 'black',
+          flex: 8, margin: '5%', marginTop: '-10%', borderRadius: 10, shadowColor: 'black',
           shadowOffset: {
             width: 0,
             height: 4
@@ -907,6 +998,61 @@ export default function MainHome() {
       >
 
         {form[index]}
+        {
+          index == 0 ?
+            (
+              <View style={{ flex: 1 }}>
+                <View style={{ flexDirection: 'row', alignSelf: 'center', margin: '5%', marginTop: 25, marginBottom: 0 }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      if (started == false) {
+                        startSpeechToText()
+                      } else if (started == true) {
+                        stopSpeechToText()
+                      }
+                    }}
+                  >
+                    <Fontisto name="mic" size={45} color={'black'} />
+                  </TouchableOpacity>
+                  <TextInput
+                    style={{ width: '80%', backgroundColor: 'white', height: 45, margin: '5%', marginTop: 0, padding: 10, borderRadius: 10, borderWidth: 1, }}
+                    value={hasil}
+                    onChangeText={setHasil}
+                  />
+                </View>
+                {
+                  hasil != '' ?
+                    (<ScrollView style={{ width: '70%', alignSelf: 'center', margin: '5%', marginLeft: '15%', marginTop: 0, borderRadius: 10 }}>
+                      <View style={{backgroundColor:'white', borderWidth:1, borderRadius:5}}>
+
+                        {
+                          suggestions.filter((suggestion) =>
+                            suggestion.toLowerCase().includes(hasil.toLowerCase())
+                          ).map((results, index) => (
+                            <TouchableOpacity style={{  }} key={index}
+                              onPress={() => {
+                                ChangeView(results)
+                                setHasil('')
+                              }}
+                            >
+                              <Text>{results}</Text>
+                            </TouchableOpacity>
+                          ))
+                        }
+                      </View>
+                    </ScrollView>)
+                    :
+                    (<></>)
+                }
+
+              </View>
+            )
+            :
+            (
+              <></>
+            )
+        }
+
 
       </LinearGradient>
 
@@ -916,13 +1062,25 @@ export default function MainHome() {
             onPress={() => {
               if (user != null) {
                 if (index == form.length - 1) {
+                  _remove_data('Regio')
+                  _remove_data('Gejala')
+                  _remove_data('Konsumsi')
+                  _remove_data('Sakit')
+                  _remove_data('Menstruasi')
+                  _remove_data('Riwayat')
                   set_index(0)
                 } else {
-                  if (user.data.jk == 0 && index == 4) {
-                    set_index(index + 2)
-                  } else {
+
+                  if (index == 7) {
                     set_index(index + 1)
+                  } else {
+                    if (index == 0) {
+                      set_index(7)
+                    } else {
+                      set_index(0)
+                    }
                   }
+
                 }
               }
 
@@ -941,7 +1099,7 @@ export default function MainHome() {
                 elevation: 5,
               }}
             >
-              <Text style={{ alignSelf: 'center', padding: 10, color: 'white', fontWeight: 'bold', fontSize: 18 }}>{index == form.length - 1? ('Kembali') : ('Lanjut')}</Text>
+              <Text style={{ alignSelf: 'center', padding: 10, color: 'white', fontWeight: 'bold', fontSize: 18 }}>{index == 0 ? ('Lihat Hasil') : (index == form.length - 1 ? ('Kembali') : ('Lanjut'))}</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -958,5 +1116,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 15,
     marginTop: 5
-  }
+  },
+
 })
