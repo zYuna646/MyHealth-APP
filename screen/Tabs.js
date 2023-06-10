@@ -61,15 +61,6 @@ export default function Tabs({ navigation }) {
         }}
       />
       <Tab.Screen
-        name='Voice'
-        component={Comunication}
-        options={{
-          tabBarIcon: (props) => (
-            <Fontisto name="mic" size={30} color={props.color} />
-          )
-        }}
-      />
-      <Tab.Screen
         name='Profile'
         component={Profile}
         options={{

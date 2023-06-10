@@ -2,7 +2,7 @@ import { StyleSheet, Text, Button, View, TouchableOpacity, Alert } from 'react-n
 import { useEffect, useState } from 'react';
 import Voice from '@react-native-voice/voice';
 import { Foundation, MaterialIcons, Entypo, Fontisto, AntDesign } from '@expo/vector-icons';
-import { TextInput } from 'react-native-gesture-handler';
+import { ScrollView, TextInput } from 'react-native-gesture-handler';
 import * as Speech from 'expo-speech';
 
 
@@ -34,7 +34,7 @@ export default function Comunication() {
 
   const onSpeechResults = (result) => {
     result.value.map((result, index) => {
-      if(index == 0){
+      if (index == 0) {
         setHasil(result)
       }
     })
@@ -46,49 +46,64 @@ export default function Comunication() {
   };
 
   return (
-    <View style={styles.container}>
-      <View style={{ flex: 1, flexDirection: 'row', margin: '10%', marginTop: '20%' }}>
-
-        <TouchableOpacity 
-          onPress={() => {
-            if(started == false){
-              startSpeechToText()
-            }else if(started == true){
-              stopSpeechToText()
-            }
-          }}
-        >
-          <Fontisto name="mic" size={45} color={'black'} />
-        </TouchableOpacity>
+    <ScrollView style={styles.container}>
+      <View style={styles.box}>
+        <Text style={{ backgroundColor: '#62CFCB', padding: '2%' }}>Rekam Suara Disini</Text>
         <TextInput
           editable={false}
           multiline={true}
-          style={{ width: 300, height: 200, borderWidth: 1, borderRadius: 5, marginLeft: 10, padding: 10, color: 'black' }}
+          style={{ width: 250, height: 200, color: 'black' }}
           onChangeText={setHasil}
           value={results[0]}
         />
+        <View style={{ alignSelf: 'center', marginBottom: '2%' }}>
+          <TouchableOpacity
+            onPress={() => {
+              if (started == false) {
+                startSpeechToText()
+              } else if (started == true) {
+                stopSpeechToText()
+              }
+            }}
+          >
+            <Fontisto name="mic" size={30} color={'black'} />
+          </TouchableOpacity>
+        </View>
+
       </View>
-      <View style={{ flex: 3, flexDirection: 'row', margin: '10%', marginTop: 150 }}>
+      <View style={styles.box}>
+        <Text style={{ backgroundColor: '#62CFCB', padding: '2%' }}>Ketik Disini</Text>
         <TextInput
           multiline={true}
-          style={{ width: 300, height: 200, borderWidth: 1, borderRadius: 5, padding: 10, color: 'black' }}
+          style={{ width: 250, height: 200, color: 'black' }}
           onChangeText={setSound}
           value={sound}
         />
-        <TouchableOpacity
-          onPress={() => {
-            Speech.speak(sound)
-          }}
-        >
-          <AntDesign style={{ marginRight: 15, marginLeft: 5 }} name="sound" size={45} color="black" />
-        </TouchableOpacity>
+        <View style={{ alignSelf: 'center', marginBottom: '2%' }}>
+          <TouchableOpacity
+            onPress={() => {
+              Speech.speak(sound)
+            }}
+          >
+            <AntDesign style={{ }} name="sound" size={30} color="black" />
+          </TouchableOpacity>
+        </View>
+
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    flexDirection: 'column'
   },
+
+  box: {
+    backgroundColor: 'white',
+    margin: '10%',
+    borderWidth: 1,
+    borderColor: 'gray'
+  }
 });

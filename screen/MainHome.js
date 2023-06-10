@@ -3,12 +3,13 @@ import React from 'react'
 import { LinearGradient } from 'expo-linear-gradient'
 import { TextInput, TouchableOpacity } from 'react-native-gesture-handler'
 import { AntDesign, Octicons } from '@expo/vector-icons';
-import { Foundation, MaterialIcons, Entypo, Fontisto } from '@expo/vector-icons';
+import { Foundation, MaterialIcons, Entypo, Fontisto, Ionicons, FontAwesome5, Feather } from '@expo/vector-icons';
 import Autocomplete from 'react-native-autocomplete-input';
 import { _store_data, _retrieve_data, _remove_data } from '../handler/handler_storage'
 import { useIsFocused } from '@react-navigation/native';
 import Voice from '@react-native-voice/voice';
 import * as Speech from 'expo-speech';
+import Comunication from './Comunication';
 
 
 function Regio() {
@@ -406,14 +407,15 @@ function Sakit() {
 
 function Menstruasi() {
   const [Btn, set_btn] = React.useState([
-    'Ya', 'Tidak', 'Sakit', 'Tidak'
+    '1 hari', '2 hari', '3 hari', '4 hari', '5 hari', '6 hari', '7 hari', 'Tidak Tau'
   ])
 
   const isFocused = useIsFocused();
-  const [color, set_color] = React.useState(['white', 'white', 'white', 'white'])
+  const [color, set_color] = React.useState(['white', 'white', 'white', 'white', 'white', 'white', 'white', 'white',])
 
-  const [hasil, set_hasil] = React.useState(['', '', ''])
+  const [hasil, set_hasil] = React.useState(['', ''])
   const [lainnya, set_lainnya] = React.useState('')
+  const [dot, set_dot] = React.useState(['dot', 'dot', 'dot'])
 
   React.useEffect(() => {
     if (!isFocused) {
@@ -427,30 +429,15 @@ function Menstruasi() {
 
   const sumbit = (i) => {
     set_lainnya('')
-    const newColor = [...color]
+    let newColor = [...color]
     if (color[i] != 'white') {
       const newHasil = [...hasil]
-      newHasil[i < 2 ? (0) : (1)] = ''
+      newHasil[0] = ''
       set_hasil(newHasil)
       newColor[i] = 'white'
     } else {
-      if(i < 2){
-        if(i == 0){
-          newColor[0] ='green'
-          newColor[1] = 'white'
-        }else{
-          newColor[1] ='green'
-          newColor[0] = 'white'
-        }
-      }else{
-        if(i == 2){
-          newColor[2] ='green'
-          newColor[3] = 'white'
-        }else{
-          newColor[3] ='green'
-          newColor[2] = 'white'
-        }
-      }
+      newColor = ['white', 'white', 'white', 'white', 'white', 'white', 'white', 'white',]
+      newColor[i] = 'green'
     }
     set_color(newColor)
   }
@@ -458,68 +445,97 @@ function Menstruasi() {
 
 
   return (
-    <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', alignSelf: 'center', marginTop: '15%' }}>
-      {Btn.map((result, index) => (
-        <View key={index} style={{
-          alignSelf: 'center', backgroundColor: color[index], width: 150, flexBasis: '40%', height: 74, margin: '5%', borderRadius: 10,
-          shadowColor: 'black',
-          shadowOffset: {
-            width: 4,
-            height: 4
-          },
-          shadowOpacity: 0.5,
-          shadowRadius: 15,
-          elevation: 5,
-        }} >
-          <TouchableOpacity style={{ height: 74, width: 150, alignSelf: 'center' }}
-            onPress={() => {
-              const newHasil = [...hasil]
-              newHasil[index < 2 ? (0) : (1)] = result
-              set_hasil(newHasil)
-              sumbit(index)
-            }}
-          >
-            <Text style={{ fontWeight: 'bold', fontSize: 18, alignSelf: 'center', paddingTop: '15%' }}>
-              {result}
+    <ScrollView>
+      <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', alignSelf: 'center', marginTop: '15%' }}>
+        <Text style={{ fontWeight: 'bold', marginLeft: 20 }}>Berapa Hari Menstruasi Terjadi?</Text>
+        {Btn.map((result, index) => (
+          <View key={index} style={{
+            alignSelf: 'center', backgroundColor: color[index], width: 150, flexBasis: '40%', height: 74, margin: '5%', borderRadius: 10,
+            shadowColor: 'black',
+            shadowOffset: {
+              width: 4,
+              height: 4
+            },
+            shadowOpacity: 0.5,
+            shadowRadius: 15,
+            elevation: 5,
+          }} >
+            <TouchableOpacity style={{ height: 74, width: 150, alignSelf: 'center' }}
+              onPress={() => {
+                const newHasil = [...hasil]
+                newHasil[0] = result
+                set_hasil(newHasil)
+                sumbit(index)
+              }}
+            >
+              <Text style={{ fontWeight: 'bold', fontSize: 18, alignSelf: 'center', paddingTop: '15%' }}>
+                {result}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        ))}
+
+      </ScrollView>
+      <Text style={{ fontWeight: 'bold', marginLeft: 20 }}>Apakah Perut Terasa Sakit?</Text>
+      <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', alignSelf: 'center', }}>
+        <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
+          <View style={{ margin: '10%', marginTop: '1%', alignSelf: 'center', alignItems: 'center' }}>
+            <TouchableOpacity
+              onPress={() => {
+                const newHasil = [...hasil]
+                const newDot = ['dot', 'dot', 'dot']
+                newDot[0] = 'dot-fill'
+                newHasil[1] = 'Tidak'
+                set_hasil(newHasil)
+                set_dot(newDot)
+              }}>
+              <Octicons name={dot[0]} size={50} color="yellow" />
+            </TouchableOpacity>
+            <Text>
+              Tidak
             </Text>
-          </TouchableOpacity>
+          </View>
+          <View style={{ margin: '10%', marginTop: '1%', alignSelf: 'center', alignItems: 'center' }}>
+            <TouchableOpacity
+              onPress={() => {
+                const newHasil = [...hasil]
+                const newDot = ['dot', 'dot', 'dot']
+                newDot[1] = 'dot-fill'
+                newHasil[1] = 'Sakit'
+                set_hasil(newHasil)
+                set_dot(newDot)
+              }} >
+              <Octicons name={dot[1]} size={50} color="orange" />
+            </TouchableOpacity>
+            <Text>
+              Sakit
+            </Text>
+          </View>
+          <View style={{ margin: '10%', marginTop: '1%', alignSelf: 'center', alignItems: 'center' }}>
+            <TouchableOpacity
+              onPress={() => {
+                const newHasil = [...hasil]
+                const newDot = ['dot', 'dot', 'dot']
+                newDot[2] = 'dot-fill'
+                newHasil[1] = 'Sangat Sakit'
+                set_hasil(newHasil)
+                set_dot(newDot)
+              }}
+            >
+              <Octicons name={dot[2]} size={50} color="red" />
+            </TouchableOpacity>
+            <Text>
+              Sangat Sakit
+            </Text>
+          </View>
+
+
         </View>
-      ))}
-      <Text style={{ fontWeight: 'bold', marginLeft: '5%', fontSize: 18 }}>Berapa Lama Menstruasi</Text>
-      <View style={{
-        alignSelf: 'center', backgroundColor: 'white',
-        width: 320, height: 100, marginLeft: 15, borderRadius: 10,
-        shadowColor: 'black',
-        shadowOffset: {
-          width: 0,
-          height: 4
-        },
-        shadowOpacity: 0.5,
-        shadowRadius: 15,
-        elevation: 5,
-      }}>
-        <TextInput
-          style={{
-            backgroundColor: 'rgba(128, 128, 128, 0.5)', height: 80, width: 300,
-            marginTop: '2.5  %',
-            alignSelf: 'center', borderRadius: 10, padding: 10
-          }}
-          placeholder='Ketik Disini'
-          value={lainnya}
-          onChangeText={(props) => {
-            set_lainnya(props)
-            set_color(['white', 'white', 'white', 'white', 'white', 'white'])
-            const newHasil = [...hasil]
-            newHasil[2] = props
-            set_hasil(newHasil)
-          }}
-        />
-      </View>
-      <View style={{
-        alignSelf: 'center',
-        width: 320, height: 110, marginLeft: 15, borderRadius: 10,
-      }}></View>
+
+      </ScrollView>
+
     </ScrollView>
+
   );
 }
 
@@ -596,6 +612,7 @@ function Hasil() {
       const Sakit = await _retrieve_data('Sakit')
       let Menstruasi = await _retrieve_data('Menstruasi')
       const Riwayat = await _retrieve_data('Riwayat')
+      const Aktivitas = await _retrieve_data('Aktivitas')
       const data = await _retrieve_data('user')
 
       if (Konsumsi == null) {
@@ -612,14 +629,19 @@ function Hasil() {
         Menstruasi = Menstruasi.filter(Boolean)
         Menstruasi = Menstruasi.join(' , ')
       }
-     
+
+      if (Aktivitas == null) {
+        Aktivitas = ['', '']
+      }
+
       set_hasil({
         'Regio': Regio,
         'Gejala': Gejala,
         'Konsumsi': Konsumsi,
         'Sakit': Sakit,
         'Menstruasi': Menstruasi,
-        'Riwayat': Riwayat
+        'Riwayat': Riwayat,
+        'Aktivitas': Aktivitas
       })
 
       set_user(data)
@@ -671,6 +693,23 @@ function Hasil() {
               marginTop: 25
             }}>Malam</Text>
 
+          </View>
+          <View style={{}}>
+            <Text style={{
+              fontWeight: 'bold',
+              fontSize: 15,
+              marginTop: 80
+            }}>Aktivitas</Text>
+            <Text style={{
+              fontWeight: 'bold',
+              fontSize: 15,
+              marginTop: 10
+            }}>Kemarin</Text>
+            <Text style={{
+              fontWeight: 'bold',
+              fontSize: 15,
+              marginTop: 25
+            }}>Hari Ini</Text>
           </View>
           <View style={{}}>
             <Text style={{
@@ -729,6 +768,23 @@ function Hasil() {
             <Text style={{
               fontWeight: 'bold',
               fontSize: 15,
+              marginTop: 80
+            }}>  </Text>
+            <Text style={{
+              fontWeight: 'bold',
+              fontSize: 15,
+              marginTop: 10
+            }}> : </Text>
+            <Text style={{
+              fontWeight: 'bold',
+              fontSize: 15,
+              marginTop: 25
+            }}> : </Text>
+          </View>
+          <View style={{}}>
+            <Text style={{
+              fontWeight: 'bold',
+              fontSize: 15,
               marginTop: 25
             }}> : </Text>
             <Text style={{
@@ -744,73 +800,87 @@ function Hasil() {
           </View>
         </View>
         {user != null && hasil != null ?
-          (<View>
-            <View style={{ position: 'absolute' }}>
-              <Text style={styles.txt}></Text>
-              <TextInput
-                onPress={toggleModal}
-                editable={false}
-                multiline={true}
-                value={hasil.Gejala}
-                style={{ width: 150, fontWeight: 'bold', fontSize: 15, padding: 10, color: 'black' }}
-              />
-            </View>
-            <View style={{}}>
-              <Text style={{
-                fontWeight: 'bold',
-                fontSize: 15,
-                marginTop: 132
-              }}>  </Text>
-              <Text style={{
-                fontWeight: 'bold',
-                fontSize: 15,
-                marginTop: 10
-              }}>{hasil.Konsumsi[0]}</Text>
-              <Text style={{
-                fontWeight: 'bold',
-                fontSize: 15,
-                marginTop: 25
-              }}>{hasil.Konsumsi[1]}</Text>
-              <Text style={{
-                fontWeight: 'bold',
-                fontSize: 15,
-                marginTop: 25
-              }}>{hasil.Konsumsi[2]}</Text>
-              <Text style={{
-                fontWeight: 'bold',
-                fontSize: 15,
-                marginTop: 25
-              }}>{hasil.Konsumsi[3]}</Text>
-            </View>
+          (
+            <View>
+              <View style={{ position: 'absolute' }}>
+                <Text style={styles.txt}></Text>
+                <TextInput
+                  onPress={toggleModal}
+                  editable={false}
+                  multiline={true}
+                  value={hasil.Gejala}
+                  style={{ width: 150, fontWeight: 'bold', fontSize: 15, padding: 10, color: 'black' }}
+                />
+              </View>
+              <View style={{}}>
+                <Text style={{
+                  fontWeight: 'bold',
+                  fontSize: 15,
+                  marginTop: 132
+                }}>  </Text>
+                <Text style={{
+                  fontWeight: 'bold',
+                  fontSize: 15,
+                  marginTop: 10
+                }}>{hasil.Konsumsi[0]}</Text>
+                <Text style={{
+                  fontWeight: 'bold',
+                  fontSize: 15,
+                  marginTop: 25
+                }}>{hasil.Konsumsi[1]}</Text>
+                <Text style={{
+                  fontWeight: 'bold',
+                  fontSize: 15,
+                  marginTop: 25
+                }}>{hasil.Konsumsi[2]}</Text>
+                <Text style={{
+                  fontWeight: 'bold',
+                  fontSize: 15,
+                  marginTop: 25
+                }}>{hasil.Konsumsi[3]}</Text>
+              </View>
+              <View style={{}}>
+                <Text style={{
+                  fontWeight: 'bold',
+                  fontSize: 15,
+                  marginTop: 79
+                }}>  </Text>
+                <Text style={{
+                  fontWeight: 'bold',
+                  fontSize: 15,
+                  marginTop: 10
+                }}>{hasil.Aktivitas[0]}</Text>
+                <Text style={{
+                  fontWeight: 'bold',
+                  fontSize: 15,
+                  marginTop: 25
+                }}>{hasil.Aktivitas[1]}</Text>
+              </View>
+              <View style={{}}>
+                <Text style={{
+                  fontWeight: 'bold',
+                  fontSize: 15,
+                  marginTop: 25
+                }}>{hasil.Sakit}</Text>
+                <Text style={{
+                  fontWeight: 'bold',
+                  fontSize: 15,
+                  marginTop: 25
+                }}>{hasil.Riwayat}</Text>
+                <Text style={{
+                  fontWeight: 'bold',
+                  fontSize: 15,
+                  marginTop: 25
+                }}>{hasil.Menstruasi}</Text>
+              </View>
 
-            <View style={{}}>
-              <Text style={{
-                fontWeight: 'bold',
-                fontSize: 15,
-                marginTop: 25
-              }}>{hasil.Sakit}</Text>
-              <Text style={{
-                fontWeight: 'bold',
-                fontSize: 15,
-                marginTop: 25
-              }}>{hasil.Riwayat}</Text>
-              <Text style={{
-                fontWeight: 'bold',
-                fontSize: 15,
-                marginTop: 25
-              }}>{hasil.Menstruasi}</Text>
-            </View>
-
-
-          </View>) :
+            </View>) :
           (<ActivityIndicator />)}
       </View>
     </ScrollView>
 
   )
 }
-
-
 function HasilRegio() {
   const [region, set_regio] = React.useState(0)
   const [dotDepan, setDotDepan] = React.useState([]);
@@ -891,63 +961,71 @@ function HasilRegio() {
   )
 }
 
+function Aktivitas() {
+
+  const isFocused = useIsFocused();
+
+  const [hasil, set_hasil] = React.useState(['', ''])
+
+  React.useEffect(() => {
+    if (!isFocused) {
+    }
+    return () => {
+      _store_data('Aktivitas', hasil)
+    }
+  }, [isFocused, hasil]);
+
+  return (
+    <ScrollView style={{ flex: 1, flexDirection: 'column' }}>
+      <View style={{
+        backgroundColor: 'white',
+        margin: '5%',
+        borderWidth: 1,
+        borderColor: 'gray'
+      }}>
+        <Text style={{ backgroundColor: '#62CFCB', padding: '2%' }}>Aktivitas Kemarin</Text>
+        <TextInput
+          multiline={true}
+          style={{ width: 250, height: 200, color: 'black', padding: 10 }}
+          onChangeText={text => set_hasil(prevState => [text, prevState[1]])}
+          value={hasil[0]}
+        />
+      </View>
+      <View style={{
+        backgroundColor: 'white',
+        margin: '5%',
+        borderWidth: 1,
+        borderColor: 'gray'
+      }}>
+        <Text style={{ backgroundColor: '#62CFCB', padding: '2%' }}>Aktivitas Hari Ini</Text>
+        <TextInput
+          multiline={true}
+          style={{ width: 250, height: 200, color: 'black', padding: 10 }}
+          onChangeText={text => set_hasil(prevState => [prevState[0], text])}
+          value={hasil[1]}
+        />
+      </View>
+    </ScrollView>
+  )
+}
+
 
 export default function MainHome() {
 
-  const form = [<></>, <Regio />, <Gejala />, <Konsumsi />, <Sakit />, <Riwayat />, <Menstruasi />, <Hasil />, <HasilRegio />]
+  const form = [<Comunication />, <Regio />, <Gejala />, <Konsumsi />, <Sakit />, <Riwayat />, <Menstruasi />, <Aktivitas />, <Hasil />, <HasilRegio />]
   const [index, set_index] = React.useState(0)
   const [user, set_user] = React.useState(null)
-  const formText = ['', 'Sakit Yang Dirasakan', 'Gejala Yang Dirasakan', 'Apa Yang Dikonsumsi',
-    'Berapa Lama Sakit', 'Riwayat Pengobatan', 'Bagaimana Menstruasi', 'Hasil ', 'Hasil Regio']
-
-  const Pertanyaan = [
-    ['sakit di bagian tubuh mana', 'sakit di bagian mana', 'sakit apa yang dirasakan', 'bagian tubuh yang terasa sakit'],
-    ['gejala apa yang dirasakan', 'apa yang dirasakan', 'perasaanya bagaimana'],
-    ['makanan apa yang dikonsumsi kemarin', 'apa yang dikonsumsi hari ini', 'makanan apa hari ini', 'makan apa'],
-    ['berapa lama sakit dirasakan', 'sakit berapa lama', 'merasakan sakit sejak kapan', 'kapan merasa sakit', 'berapa hari sakit'],
-    ['sebelumnya sempat berobat', 'sudah minum obat'],
-    ['apakah sedang menstruasi', 'apakah saat ini menstruasi', 'apakah saat ini sedang menstruasi', 'apakah sedang datang bulan', 'apakah saat ini datang bulan', 'apakah saat ini sedang datang bulan', 'sudah berapa hari datang bulan', 'apakah sedang haid', 'apakah saat ini haid', 'sudah berapa hari haid']
+  const formText = ['Percakapan', 'Bagian Tubuh Yang Sakit', 'Apa Yang Dirasakan', 'Apa Yang Dikonsumsi',
+    'Kurun Waktu Sakit Yang Dirasakan', 'Riwayat Pengobatan', 'Siklus Menstruasi', 'Aktvitas Yang Dilakukan', 'Hasil ', 'Hasil Regio']
+  const icon = [<Entypo style={{ alignSelf: 'center' }} name="mic" size={25} color="gray" />,
+  <Ionicons style={{ alignSelf: 'center' }} name="body" size={25} color="gray" />, <Entypo name="emoji-sad" style={{ alignSelf: 'center' }} size={25} color="gray" />,
+  <Entypo style={{ alignSelf: 'center' }} name="bowl" size={25} color="gray" />, <Entypo style={{ alignSelf: 'center' }} name="squared-plus" size={25} color="gray" />,
+  <FontAwesome5 style={{ alignSelf: 'center' }} name="pills" size={25} color="gray" />, <Entypo name="drop" style={{ alignSelf: 'center' }} size={25} color="gray" />,
+  <Feather style={{ alignSelf: 'center' }} name="activity" size={25} color="gray" />
+    ,
+  <FontAwesome5 style={{ alignSelf: 'center' }} name="notes-medical" size={25} color="gray" />, <Ionicons style={{ alignSelf: 'center' }} name="md-body-outline" size={25} color="gray" />, 
   ]
-
-  let [started, setStarted] = React.useState(false);
-  let [results, setResults] = React.useState([]);
-  const [hasil, setHasil] = React.useState('')
-  const [sound, setSound] = React.useState('')
-
-  const suggestions = [
-    'sakit di bagian tubuh mana', 'sakit di bagian mana', 'sakit apa yang dirasakan', 'bagian tubuh yang terasa sakit',
-    'gejala apa yang dirasakan', 'apa yang dirasakan', 'perasaanya bagaimana',
-    'makanan apa yang dikonsumsi kemarin', 'apa yang dikonsumsi hari ini', 'makanan apa hari ini', 'makan apa',
-    'berapa lama sakit dirasakan', 'sakit berapa lama', 'merasakan sakit sejak kapan', 'kapan merasa sakit', 'berapa hari sakit',
-    'sebelumnya sempat berobat', 'sudah minum obat',
-    'apakah sedang menstruasi', 'apakah saat ini menstruasi', 'apakah saat ini sedang menstruasi', 'apakah sedang datang bulan', 'apakah saat ini datang bulan', 'apakah saat ini sedang datang bulan', 'sudah berapa hari datang bulan', 'apakah sedang haid', 'apakah saat ini haid', 'sudah berapa hari haid'
-  ]
-
-
-  const startSpeechToText = async () => {
-    await Voice.start("id-ID");
-    setStarted(true);
-  };
-
-  const stopSpeechToText = async () => {
-    await Voice.stop();
-    setStarted(false);
-  };
-
-  const onSpeechResults = (result) => {
-    result.value.map((result, index) => {
-      if (index == 0) {
-        setHasil(result)
-        ChangeView(result)
-      }
-    })
-    setResults(result.value);
-  };
-
-  const onSpeechError = (error) => {
-    console.log(error);
-  };
-
+  const iconName = ['Percakapan', 'Regio', 'Gejala', 'Konsumsi', 'Kesehatan', 'Pengobatan', 'Menstruasi', 'Aktivitas', 'Hasil', 'Hasil Regio']
   React.useEffect(() => {
     const fetchData = async () => {
       const data = await _retrieve_data('user')
@@ -955,24 +1033,10 @@ export default function MainHome() {
     }
     fetchData()
 
-    Voice.onSpeechError = onSpeechError;
-    Voice.onSpeechResults = onSpeechResults;
 
-    return () => {
-      Voice.destroy().then(Voice.removeAllListeners);
-    }
   }, [])
 
-  const ChangeView = (hsl) => {
-    for (let i = 0; i < Pertanyaan.length; i++) {
-      const isHave = Pertanyaan[i].includes(hsl.toLowerCase());
-      if (isHave === true) {
-        set_index(i + 1);
-        setHasil('')
-        break;
-      }
-    }
-  };
+
 
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
@@ -996,119 +1060,42 @@ export default function MainHome() {
           elevation: 5,
         }}
       >
-
         {form[index]}
-        {
-          index == 0 ?
-            (
-              <View style={{ flex: 1 }}>
-                <View style={{ flexDirection: 'row', alignSelf: 'center', margin: '5%', marginTop: 25, marginBottom: 0 }}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      if (started == false) {
-                        startSpeechToText()
-                      } else if (started == true) {
-                        stopSpeechToText()
-                      }
-                    }}
-                  >
-                    <Fontisto name="mic" size={45} color={'black'} />
-                  </TouchableOpacity>
-                  <TextInput
-                    style={{ width: '80%', backgroundColor: 'white', height: 45, margin: '5%', marginTop: 0, padding: 10, borderRadius: 10, borderWidth: 1, }}
-                    value={hasil}
-                    onChangeText={setHasil}
-                  />
-                </View>
-                {
-                  hasil != '' ?
-                    (<ScrollView style={{ width: '70%', alignSelf: 'center', margin: '5%', marginLeft: '15%', marginTop: 0, borderRadius: 10 }}>
-                      <View style={{backgroundColor:'white', borderWidth:1, borderRadius:5}}>
-
-                        {
-                          suggestions.filter((suggestion) =>
-                            suggestion.toLowerCase().includes(hasil.toLowerCase())
-                          ).map((results, index) => (
-                            <TouchableOpacity style={{  }} key={index}
-                              onPress={() => {
-                                ChangeView(results)
-                                setHasil('')
-                              }}
-                            >
-                              <Text>{results}</Text>
-                            </TouchableOpacity>
-                          ))
-                        }
-                      </View>
-                    </ScrollView>)
-                    :
-                    (<></>)
-                }
-
-              </View>
-            )
-            :
-            (
-              <></>
-            )
-        }
-
 
       </LinearGradient>
-
-      <View style={{ flex: 1 }}>
-        <View style={{ alignSelf: 'center', width: 131, height: 50 }}>
-          <TouchableOpacity style={{ alignSelf: 'center' }}
-            onPress={() => {
-              if (user != null) {
-                if (index == form.length - 1) {
-                  _remove_data('Regio')
-                  _remove_data('Gejala')
-                  _remove_data('Konsumsi')
-                  _remove_data('Sakit')
-                  _remove_data('Menstruasi')
-                  _remove_data('Riwayat')
-                  set_index(0)
-                } else {
-
-                  if (index == 7) {
-                    set_index(index + 1)
-                  } else {
-                    if (index == 0) {
-                      set_index(7)
-                    } else {
-                      set_index(0)
-                    }
-                  }
-
-                }
-              }
-
-            }}
-          >
-            <LinearGradient
-              colors={['#A5E5E3', '#62CFCB']}
+      <ScrollView horizontal style={{ backgroundColor: '#62CFCB', flexDirection: 'row', height: 5 }}>
+        {icon.map((result, index) => (
+          <View key={index} style={{ alignSelf: 'center', justifyContent: 'center', margin: 10 }}>
+            <TouchableOpacity
               style={{
-                width: 131, height: 46, borderRadius: 15, shadowColor: 'black',
-                shadowOffset: {
-                  width: 0,
-                  height: 4
-                },
-                shadowOpacity: 0.5,
-                shadowRadius: 15,
-                elevation: 5,
+                backgroundColor: 'white',
+                borderRadius: 100,
+                width: 50,
+                height: 50,
+                justifyContent: 'center',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.3,
+                margin: 1,
+                alignSelf: 'center',
+                marginBottom: 1,
+                shadowRadius: 2,
+                elevation: 2,
+              }}
+              onPress={() => {
+                set_index(index)
               }}
             >
-              <Text style={{ alignSelf: 'center', padding: 10, color: 'white', fontWeight: 'bold', fontSize: 18 }}>{index == 0 ? ('Lihat Hasil') : (index == form.length - 1 ? ('Kembali') : ('Lanjut'))}</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-      </View>
+              {icon[index]}
+            </TouchableOpacity>
+            <Text style={{ color: 'white', textAlign: 'center' }}>
+              {iconName[index]}
+            </Text>
+          </View>
+        ))}
+      </ScrollView>
 
     </View>
   )
-
-
 }
 
 const styles = StyleSheet.create({
