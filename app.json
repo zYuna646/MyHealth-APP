@@ -4,7 +4,7 @@
     "slug": "MyHealth",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/img/Home/heart.png",
+    "icon": "./assets/img/icon_heart.jpg",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/img/Home/heart.png",
@@ -28,7 +28,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/img/Home/heart.png",
+        "foregroundImage": "./assets/img/icon_heart.jpg",
         "backgroundColor": "#ffffff"
       },
       "package": "com.zyuna646.MyHealth"

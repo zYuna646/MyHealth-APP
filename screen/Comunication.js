@@ -52,7 +52,7 @@ export default function Comunication() {
         <TextInput
           editable={false}
           multiline={true}
-          style={{ width: 250, height: 200, color: 'black' }}
+          style={{ width: 250, height: 200, color: 'black', padding: '5%' }}
           onChangeText={setHasil}
           value={results[0]}
         />
@@ -75,7 +75,7 @@ export default function Comunication() {
         <Text style={{ backgroundColor: '#62CFCB', padding: '2%' }}>Ketik Disini</Text>
         <TextInput
           multiline={true}
-          style={{ width: 250, height: 200, color: 'black' }}
+          style={{ width: 250, height: 200, color: 'black', padding: '5%' }}
           onChangeText={setSound}
           value={sound}
         />
@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
   box: {
     backgroundColor: 'white',
     margin: '10%',
+    marginBottom: '0.5%',
     borderWidth: 1,
     borderColor: 'gray'
   }

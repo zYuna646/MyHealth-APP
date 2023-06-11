@@ -64,32 +64,6 @@ export default function Home({ navigation }) {
                 </Text>
             </View>
             <View style={styles.footer}>
-                <View style={{ margin: '5%' }}>
-                    <TouchableOpacity style={{
-                        borderRadius: 15,
-                        shadowColor: 'black',
-                        shadowOffset: {
-                            width: 0,
-                            height: 4
-                        },
-                        shadowOpacity: 0.5,
-                        shadowRadius: 15,
-                        elevation: 5
-                    }}
-                        onPress={() => {
-                            set_menu(!menu)
-                        }}
-                    >
-                        <LinearGradient
-                            colors={['#A5E5E3', '#62CFCB']}
-                            style={styles.button}
-                            start={{ x: 0, y: 0 }}
-                            end={{ x: 1, y: 0 }}
-                        >
-                            <Text style={styles.buttonText}>Petunjuk</Text>
-                        </LinearGradient>
-                    </TouchableOpacity>
-                </View>
                 <View style={{ margin: '5%', }}>
                     <TouchableOpacity style={{
                         borderRadius: 15,
@@ -186,5 +160,4 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         margin: '5%'
     }
-
 })

@@ -415,7 +415,7 @@ function Menstruasi() {
 
   const [hasil, set_hasil] = React.useState(['', ''])
   const [lainnya, set_lainnya] = React.useState('')
-  const [dot, set_dot] = React.useState(['dot', 'dot', 'dot'])
+  const [dot, set_dot] = React.useState(['white', 'white', 'white'])
 
   React.useEffect(() => {
     if (!isFocused) {
@@ -478,58 +478,122 @@ function Menstruasi() {
       </ScrollView>
       <Text style={{ fontWeight: 'bold', marginLeft: 20 }}>Apakah Perut Terasa Sakit?</Text>
       <ScrollView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap', alignSelf: 'center', }}>
-        <View style={{ flexDirection: 'row', alignSelf: 'center' }}>
-          <View style={{ margin: '10%', marginTop: '1%', alignSelf: 'center', alignItems: 'center' }}>
-            <TouchableOpacity
-              onPress={() => {
-                const newHasil = [...hasil]
-                const newDot = ['dot', 'dot', 'dot']
-                newDot[0] = 'dot-fill'
+        <View style={{ flexDirection: 'column', alignSelf: 'center' }}>
+          <TouchableOpacity
+            onPress={() => {
+              const newHasil = [...hasil]
+              const newDot = ['white', 'white', 'white']
+              if (dot[0] != 'green') {
+                newDot[0] = 'green'
                 newHasil[1] = 'Tidak'
                 set_hasil(newHasil)
                 set_dot(newDot)
-              }}>
-              <Octicons name={dot[0]} size={50} color="yellow" />
-            </TouchableOpacity>
-            <Text>
-              Tidak
-            </Text>
-          </View>
-          <View style={{ margin: '10%', marginTop: '1%', alignSelf: 'center', alignItems: 'center' }}>
-            <TouchableOpacity
-              onPress={() => {
-                const newHasil = [...hasil]
-                const newDot = ['dot', 'dot', 'dot']
-                newDot[1] = 'dot-fill'
+
+              } else {
+                newHasil[1] = ''
+                set_hasil(newHasil)
+                set_dot(newDot)
+              }
+
+            }}
+          >
+            <View style={{
+              flexDirection: 'row', alignItems: 'center', width: 300, height: 125, backgroundColor: dot[0], margin: '5%', alignSelf: 'center', borderRadius: 10
+              , shadowColor: 'black',
+              shadowOffset: {
+                width: 4,
+                height: 4
+              },
+              shadowOpacity: 0.5,
+              shadowRadius: 15,
+              elevation: 5,
+              padding: '5%'
+            }}>
+              <Image
+                style={{ width: 60, height: 90 }}
+                source={require('../assets/img/tidak.png')}
+              />
+              <Text style={{ marginLeft: 30, fontWeight: 'bold', fontSize: 25 }}>
+                Tidak
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              const newHasil = [...hasil]
+              const newDot = ['white', 'white', 'white']
+              if (dot[0] != 'green') {
+                newDot[1] = 'green'
                 newHasil[1] = 'Sakit'
                 set_hasil(newHasil)
                 set_dot(newDot)
-              }} >
-              <Octicons name={dot[1]} size={50} color="orange" />
-            </TouchableOpacity>
-            <Text>
-              Sakit
-            </Text>
-          </View>
-          <View style={{ margin: '10%', marginTop: '1%', alignSelf: 'center', alignItems: 'center' }}>
-            <TouchableOpacity
-              onPress={() => {
-                const newHasil = [...hasil]
-                const newDot = ['dot', 'dot', 'dot']
-                newDot[2] = 'dot-fill'
+
+              } else {
+                newHasil[1] = ''
+                set_hasil(newHasil)
+                set_dot(newDot)
+              }
+            }}
+          >
+            <View style={{
+              flexDirection: 'row', alignItems: 'center', width: 300, height: 125, backgroundColor: dot[1], margin: '5%', alignSelf: 'center', borderRadius: 10
+              , shadowColor: 'black',
+              shadowOffset: {
+                width: 4,
+                height: 4
+              },
+              shadowOpacity: 0.5,
+              shadowRadius: 15,
+              elevation: 5,
+              padding: '5%'
+            }}>
+              <Image
+                style={{ width: 60, height: 90 }}
+                source={require('../assets/img/sakit.png')}
+              />
+              <Text style={{ marginLeft: 30, fontWeight: 'bold', fontSize: 25 }}>
+                Sakit
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              const newHasil = [...hasil]
+              const newDot = ['white', 'white', 'white']
+              if (dot[0] != 'green') {
+                newDot[2] = 'green'
                 newHasil[1] = 'Sangat Sakit'
                 set_hasil(newHasil)
                 set_dot(newDot)
-              }}
-            >
-              <Octicons name={dot[2]} size={50} color="red" />
-            </TouchableOpacity>
-            <Text>
-              Sangat Sakit
-            </Text>
-          </View>
 
-
+              } else {
+                newHasil[1] = ''
+                set_hasil(newHasil)
+                set_dot(newDot)
+              }
+            }}
+          >
+            <View style={{
+              flexDirection: 'row', alignItems: 'center', width: 300, height: 125, backgroundColor: dot[2], margin: '5%', alignSelf: 'center', borderRadius: 10
+              , shadowColor: 'black',
+              shadowOffset: {
+                width: 4,
+                height: 4
+              },
+              shadowOpacity: 0.5,
+              shadowRadius: 15,
+              elevation: 5,
+              padding: '5%'
+            }}>
+              <Image
+                style={{ width: 60, height: 90 }}
+                source={require('../assets/img/sangat_sakit.png')}
+              />
+              <Text style={{ marginLeft: 30, fontWeight: 'bold', fontSize: 25 }}>
+                Sangat Sakit
+              </Text>
+            </View>
+          </TouchableOpacity>
         </View>
 
       </ScrollView>
@@ -611,7 +675,6 @@ function Hasil() {
       let Konsumsi = await _retrieve_data('Konsumsi')
       const Sakit = await _retrieve_data('Sakit')
       let Menstruasi = await _retrieve_data('Menstruasi')
-      const Riwayat = await _retrieve_data('Riwayat')
       const Aktivitas = await _retrieve_data('Aktivitas')
       const data = await _retrieve_data('user')
 
@@ -640,7 +703,6 @@ function Hasil() {
         'Konsumsi': Konsumsi,
         'Sakit': Sakit,
         'Menstruasi': Menstruasi,
-        'Riwayat': Riwayat,
         'Aktivitas': Aktivitas
       })
 
@@ -717,11 +779,7 @@ function Hasil() {
               fontSize: 15,
               marginTop: 25
             }}>Berapa Lama Sakit</Text>
-            <Text style={{
-              fontWeight: 'bold',
-              fontSize: 15,
-              marginTop: 25
-            }}>Riwayat Pengobatan</Text>
+
             <Text style={{
               fontWeight: 'bold',
               fontSize: 15,
@@ -787,11 +845,7 @@ function Hasil() {
               fontSize: 15,
               marginTop: 25
             }}> : </Text>
-            <Text style={{
-              fontWeight: 'bold',
-              fontSize: 15,
-              marginTop: 25
-            }}> : </Text>
+
             <Text style={{
               fontWeight: 'bold',
               fontSize: 15,
@@ -862,11 +916,7 @@ function Hasil() {
                   fontSize: 15,
                   marginTop: 25
                 }}>{hasil.Sakit}</Text>
-                <Text style={{
-                  fontWeight: 'bold',
-                  fontSize: 15,
-                  marginTop: 25
-                }}>{hasil.Riwayat}</Text>
+
                 <Text style={{
                   fontWeight: 'bold',
                   fontSize: 15,
@@ -1012,29 +1062,32 @@ function Aktivitas() {
 
 export default function MainHome() {
 
-  const form = [<Comunication />, <Regio />, <Gejala />, <Konsumsi />, <Sakit />, <Riwayat />, <Menstruasi />, <Aktivitas />, <Hasil />, <HasilRegio />]
-  const [index, set_index] = React.useState(0)
+  const form = [<Comunication />, <Regio />, <Gejala />, <Konsumsi />, <Sakit />, <Menstruasi />, <Aktivitas />, <Hasil />, <HasilRegio />]
+  const [index, set_index] = React.useState(-1)
   const [user, set_user] = React.useState(null)
   const formText = ['Percakapan', 'Bagian Tubuh Yang Sakit', 'Apa Yang Dirasakan', 'Apa Yang Dikonsumsi',
-    'Kurun Waktu Sakit Yang Dirasakan', 'Riwayat Pengobatan', 'Siklus Menstruasi', 'Aktvitas Yang Dilakukan', 'Hasil ', 'Hasil Regio']
-  const icon = [<Entypo style={{ alignSelf: 'center' }} name="mic" size={25} color="gray" />,
-  <Ionicons style={{ alignSelf: 'center' }} name="body" size={25} color="gray" />, <Entypo name="emoji-sad" style={{ alignSelf: 'center' }} size={25} color="gray" />,
-  <Entypo style={{ alignSelf: 'center' }} name="bowl" size={25} color="gray" />, <Entypo style={{ alignSelf: 'center' }} name="squared-plus" size={25} color="gray" />,
-  <FontAwesome5 style={{ alignSelf: 'center' }} name="pills" size={25} color="gray" />, <Entypo name="drop" style={{ alignSelf: 'center' }} size={25} color="gray" />,
-  <Feather style={{ alignSelf: 'center' }} name="activity" size={25} color="gray" />
+    'Kurun Waktu Sakit Yang Dirasakan', 'Siklus Menstruasi', 'Aktvitas Yang Dilakukan', 'Hasil ', 'Hasil Regio']
+  const icon = [
+    <Entypo style={{ alignSelf: 'center' }} name="mic" size={25} color="#62CFCB" />,
+    <Ionicons style={{ alignSelf: 'center' }} name="body" size={25} color="#62CFCB" />,
+    <Entypo name="emoji-sad" style={{ alignSelf: 'center' }} size={25} color="#62CFCB" />,
+    <Entypo style={{ alignSelf: 'center' }} name="bowl" size={25} color="#62CFCB" />,
+    <FontAwesome5 style={{ alignSelf: 'center' }} name="pills" size={25} color="#62CFCB" />,
+    <Entypo name="drop" style={{ alignSelf: 'center' }} size={25} color="#62CFCB" />,
+    <Feather style={{ alignSelf: 'center' }} name="activity" size={25} color="#62CFCB" />
     ,
-  <FontAwesome5 style={{ alignSelf: 'center' }} name="notes-medical" size={25} color="gray" />, <Ionicons style={{ alignSelf: 'center' }} name="md-body-outline" size={25} color="gray" />, 
+    <FontAwesome5 style={{ alignSelf: 'center' }} name="notes-medical" size={25} color="#62CFCB" />, <Ionicons style={{ alignSelf: 'center' }} name="md-body-outline" size={25} color="#62CFCB" />,
   ]
-  const iconName = ['Percakapan', 'Regio', 'Gejala', 'Konsumsi', 'Kesehatan', 'Pengobatan', 'Menstruasi', 'Aktivitas', 'Hasil', 'Hasil Regio']
+  const iconName = ['Percakapan', 'Regio', 'Gejala', 'Konsumsi', 'Kesehatan', 'Menstruasi', 'Aktivitas', 'Hasil', 'Hasil Regio']
   React.useEffect(() => {
     const fetchData = async () => {
       const data = await _retrieve_data('user')
       set_user(data)
     }
     fetchData()
-
-
   }, [])
+
+  const [c, set_c] = React.useState(['white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white'])
 
 
 
@@ -1060,7 +1113,17 @@ export default function MainHome() {
           elevation: 5,
         }}
       >
-        {form[index]}
+        {index !== -1 ? (
+          form[index]
+        ) : (
+          <View  style={{alignSelf: 'center' }}>
+            <Image
+             style={{ resizeMode:'stretch', alignSelf:'center', flex: 1, width: 355, height: 400}}
+              source={require('../assets/img/baru/petunjuk.png')}
+            />
+          </View>
+
+        )}
 
       </LinearGradient>
       <ScrollView horizontal style={{ backgroundColor: '#62CFCB', flexDirection: 'row', height: 5 }}>
@@ -1068,7 +1131,7 @@ export default function MainHome() {
           <View key={index} style={{ alignSelf: 'center', justifyContent: 'center', margin: 10 }}>
             <TouchableOpacity
               style={{
-                backgroundColor: 'white',
+                backgroundColor: c[index],
                 borderRadius: 100,
                 width: 50,
                 height: 50,
@@ -1083,6 +1146,9 @@ export default function MainHome() {
               }}
               onPress={() => {
                 set_index(index)
+                const newC = ['white', 'white', 'white', 'white', 'white', 'white', 'white', 'white', 'white']
+                newC[index] = 'rgba(0, 0, 255, 0.5)'
+                set_c(newC)
               }}
             >
               {icon[index]}
@@ -1097,7 +1163,6 @@ export default function MainHome() {
     </View>
   )
 }
-
 const styles = StyleSheet.create({
   txt: {
     fontWeight: 'bold',
